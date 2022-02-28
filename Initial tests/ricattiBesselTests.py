@@ -1,6 +1,6 @@
 import sys
 sys.path.append('./')
-from asymmetryFactorJ1.mathFunctions.ricattiBesselFunctions import ricattiBessel as rb
+from asymmetryFactorJ1.mathFunctions import mathFuncs as rb
 import plotFunctions
 import numpy as np
 
@@ -14,14 +14,14 @@ def testRicatteBessel_Phi_n():
     for i in n:
         results.append(rb.ricattiBessel_jn(i, z))
         
-    plotFunctions.PlotGraphic(n, 'Ricatti-Bessel ψ_n(z)', 'ψ', results, z, -1.5, 2)
+    plotFunctions.PlotGraphicMath(n, 'Ricatti-Bessel ψ_n(z)', 'ψ', results, z, -1.5, 2)
 
 def testRicatteBesselDerivative_Phi_n ():
     results = []
     for i in n:
         results.append(rb.ricattiBessel_jn_derivative(i, z))
         
-    plotFunctions.PlotGraphic(n, 'Ricatti-Bessel ψ\'_n(z)', 'ψ\'', results, z, -1.5, 2)
+    plotFunctions.PlotGraphicMath(n, 'Ricatti-Bessel ψ\'_n(z)', 'ψ\'', results, z, -1.5, 2)
 
 def testRicatteBessel_Xi_n():
     plotFunctions.PlotGraphicRealAndImageParts("Ricatti-Bessel ξ_n(z)", "n=0", 'g', rb.ricattiBessel_hn(0, z1), z1, -1.5, 4)

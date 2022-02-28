@@ -1,6 +1,6 @@
-from .mathFunctions.ricattiBesselFunctions import ricattiBessel as rb
+from asymmetryFactorJ1.mathFunctions import mathFuncs as rb
 
-def varD_n (u_r, M, ka, n):
+def Dn (u_r, M, ka, n):
     chi_ka = rb.ricattiBessel_hn(n, ka)
     chiD_ka = rb.ricattiBessel_hn_derivative(n, ka)
     psi_ka = rb.ricattiBessel_jn(n, ka)

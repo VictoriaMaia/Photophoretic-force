@@ -1,5 +1,5 @@
+from asymmetryFactorJ1.mathFunctions import mathFuncs as rb
 import numpy as np
-from .mathFunctions.ricattiBesselFunctions import ricattiBessel as rb
 
 def Rn (M, x, n):
     Mx = M * x

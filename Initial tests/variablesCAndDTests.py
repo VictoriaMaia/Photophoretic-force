@@ -1,7 +1,7 @@
 import sys
 sys.path.append('./')
-from asymmetryFactorJ1 import cn as CN
-from asymmetryFactorJ1 import dn as DN
+from asymmetryFactorJ1.variables import cn as CN
+from asymmetryFactorJ1.variables import dn as DN
 import numpy as np
 import matplotlib.pyplot as plt
 import plotFunctions 
@@ -18,8 +18,8 @@ def testVarCAndD():
     x = np.linspace(0.01, 20, 200)
 
     for i in range(len(n)):
-        cn = CN.varC_n(u_r, m, x, n[i])
-        dn = DN.varD_n(u_r, m, x, n[i])
+        cn = CN.Cn(u_r, m, x, n[i])
+        dn = DN.Dn(u_r, m, x, n[i])
         labelStr = 'n='+ str(n[i])
 
         plt.subplot(linha, coluna, position)
@@ -53,7 +53,7 @@ def testVarC():
     results = []
 
     for i in n:
-        cn = CN.varC_n(u_r, m, x, i)
+        cn = CN.Cn(u_r, m, x, i)
         results.append(abs(cn))
 
     plotFunctions.PlotOneGraphic ('|c_n| x n', "", 'b.', results, n, -0.02, 0.73, 'n', '|c_n|')
