@@ -1,7 +1,7 @@
 import sys
 sys.path.append('./')
 from asymmetryFactorJ1.mathFunctions import mathFuncs as bessel
-import plotFunctions
+from Tests.helperFunctionsToTests import plotFunctions
 import numpy as np
 
 z  = np.linspace(0, 20, 200)

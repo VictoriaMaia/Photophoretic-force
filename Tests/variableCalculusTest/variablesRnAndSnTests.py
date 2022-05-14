@@ -20,5 +20,5 @@ def TestVarSn():
         print(SN.Sn(m, i, n))
 
 if __name__ == '__main__':
-    # TestVarRn()
+    TestVarRn()
     TestVarSn()

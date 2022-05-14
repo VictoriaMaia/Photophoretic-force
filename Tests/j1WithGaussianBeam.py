@@ -3,11 +3,12 @@ sys.path.append('./')
 
 from asymmetryFactorJ1 import *
 from asymmetryFactorJ1.gaussianBeam import *
+from Tests.helperFunctionsToTests import plotFunctions
 
 import numpy as np
 import math
 import matplotlib.pyplot as plt
-import plotFunctions
+from timeit import default_timer as timer
 
 mili = 10**(-3)
 micro = 10**(-6) 
@@ -34,6 +35,7 @@ def testJ1GaussianBeamWithJ1PlaneWave():
     resultsRedJ1 = []
     resultsBlackJ1 = []
 
+    start = timer()
     for i in x:
         resultsBlueJ1GB.append(J1(J1Gauss(i, mBlue, ur, k, z0, s)))
         resultsRedJ1GB.append(J1(J1Gauss(i, mRed, ur, k, z0, s)))
@@ -41,7 +43,9 @@ def testJ1GaussianBeamWithJ1PlaneWave():
         resultsBlueJ1.append(J1(J1_attributes(i, mBlue, ur)))
         resultsRedJ1.append(J1(J1_attributes(i, mRed, ur)))
         resultsBlackJ1.append(J1(J1_attributes(i, mBlack, ur)))
-        
+    tempo = timer()-start
+    print(tempo)
+
     resultsToPlot = []
 
     resultsToPlot.append(plotFunctions.ResultsGraficAttributes(
@@ -122,12 +126,14 @@ def testJ1GaussianVaryingSValue():
     resultsX3J1 = []
     resultsX8J1 = []
 
-
+    start = timer()
     for i in s:
         resultsX3J1GB.append(J1(J1Gauss(x3, m, ur, k, z0, i)))
         resultsX8J1GB.append(J1(J1Gauss(x8, m, ur, k, z0, i)))
         resultsX3J1.append(J1(J1_attributes(x3, m, ur)))
         resultsX8J1.append(J1(J1_attributes(x8, m, ur)))
+    tempo = timer()-start
+    print(tempo)
 
     resultsToPlot = []
 
@@ -177,6 +183,7 @@ def testJ1GaussianVaryingSValue():
                                 text=True,
                                 )
 
+
 def testJ1GaussianVaryingSAndXValues():
     l = 10.63 * micro 
     k = (2*math.pi) / l
@@ -206,21 +213,30 @@ def testJ1GaussianVaryingSAndXValues():
     resultsX3s016 = []
     resultsX8s016 = []
 
+    start = timer()
     for i in z0fig1:
         resultsX1s001.append(J1(J1Gauss(x1, m, ur, k, i, s[0]))*10000)
         resultsX3s001.append(J1(J1Gauss(x3, m, ur, k, i, s[0])))
         resultsX8s001.append(J1(J1Gauss(x8, m, ur, k, i, s[0])))
+    tempo = timer()-start
+    print(tempo)
 
+    start = timer()
     for i in z0fig2:
         resultsX1s01.append(J1(J1Gauss(x1, m, ur, k, i, s[1]))*5000)
         resultsX3s01.append(J1(J1Gauss(x3, m, ur, k, i, s[1])))
         resultsX8s01.append(J1(J1Gauss(x8, m, ur, k, i, s[1])))
+    tempo = timer()-start
+    print(tempo)
 
+    start = timer()
     for i in z0fig3:
         resultsX1s016.append(J1(J1Gauss(x1, m, ur, k, i, s[2]))*1000)
         resultsX3s016.append(J1(J1Gauss(x3, m, ur, k, i, s[2])))
         resultsX8s016.append(J1(J1Gauss(x8, m, ur, k, i, s[2])))
-        
+    tempo = timer()-start
+    print(tempo)
+
     z0fig1 = np.linspace(-15, 15, 250)
     z0fig2 = np.linspace(-150, 150, 250)
     z0fig3 = np.linspace(-60, 60, 250)
@@ -262,6 +278,6 @@ def testJ1GaussianVaryingSAndXValues():
 
 if __name__ == '__main__':
     # testJ1GaussianBeam()
-    # testJ1GaussianBeamWithJ1PlaneWave()
+    testJ1GaussianBeamWithJ1PlaneWave()
     # testJ1GaussianVaryingSValue()
-    testJ1GaussianVaryingSAndXValues()
+    # testJ1GaussianVaryingSAndXValues()

@@ -2,9 +2,9 @@ import sys
 sys.path.append('./')
 from asymmetryFactorJ1.variables import cn as CN
 from asymmetryFactorJ1.variables import dn as DN
+from Tests.helperFunctionsToTests import plotFunctions
 import numpy as np
 import matplotlib.pyplot as plt
-import plotFunctions 
 
 color = ['g', 'r', 'b', 'c', 'm', 'y']
 

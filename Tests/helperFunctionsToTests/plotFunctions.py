@@ -84,6 +84,7 @@ def PlotGraphic (resultsToPlot,
                  ylimit=False, 
                  xlimit=False,
                  text=False,
+                 legend=False,
                  saveFig=False
                  ):
 
@@ -113,7 +114,9 @@ def PlotGraphic (resultsToPlot,
     plt.title(graficInfo.title)
     plt.xlabel(graficInfo.xLabel)
     plt.ylabel(graficInfo.yLabel)
-    plt.legend(loc='best')
+
+    if legend:
+        plt.legend(loc='best')
     
     if ylimit:
         plt.ylim(graficInfo.yLowerLimit, graficInfo.yUpperLimit)

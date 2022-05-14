@@ -2,9 +2,11 @@ import sys
 sys.path.append('./')
 
 from asymmetryFactorJ1 import *
-
+from Tests.helperFunctionsToTests import plotFunctions
 import numpy as np
-import plotFunctions
+from timeit import default_timer as timer
+from functools import partial
+
 
 mili = 10**(-3)
 micro = 10**(-6) 
@@ -26,7 +28,7 @@ def testJ1Value():
         print("The J1 result is correct!!")
     
 
-def testJ1For3Particles():
+def testJ1For3Particles(returnTimeBool):
     mBlue = 1.57 - 0.038j
     mRed = 1.57 - 0.19j
     mBlack = 1.57 - 0.95j
@@ -39,11 +41,15 @@ def testJ1For3Particles():
     resultsRed = []
     resultsBlack = []
 
+    start = timer()
     for i in x:
         resultsBlue.append(J1(J1_attributes(i, mBlue, ur)))
         resultsRed.append(J1(J1_attributes(i, mRed, ur)))
         resultsBlack.append(J1(J1_attributes(i, mBlack, ur)))
-
+    tempo = timer()-start
+    
+    if(returnTimeBool):
+        print(tempo)
     
     resultsToPlot = []
 
@@ -86,15 +92,21 @@ def testJ1For3Particles():
                                 )
 
 
-def testJ1Fig1MACKOWSKI():
+def testJ1Fig1MACKOWSKI(returnTimeBool):
     m = 1.57 - 0.038j
     x = np.linspace(0.01, 20, 200)
     ur = 1
     results = []
     rzeros = []
+    start = timer()
     for i in x:
         results.append(J1(J1_attributes(i, m, ur)))
         rzeros.append(0)
+    tempo = timer()-start
+    
+    if(returnTimeBool):
+        print(tempo)
+    
 
     plotFunctions.PlotOneGraphic ("", "Eqn (62)", 'g', results, x, -0.10, 0.15, xLabel='Size Parameter x', yLabel='Asymmetry Factor J1')
 
@@ -139,19 +151,22 @@ if __name__ == '__main__':
     print("3 - testJ1Fig1MACKOWSKI")
     print("4 - testJ1Fig2MACKOWSKI")
 
-    numberTest = input("Which will execute? Please write the number ")
-
-    switch = {
+    numberTest = input("Which will execute? Please write the number: ")
+    returnTime = input("Return runtime? (y/n): ")
+   
+    switchRunTime = {
+        "y": True,
+        "n": False,
+    }
+    
+    returnTimeBool = switchRunTime.get(returnTime)
+    
+    switchFuncsTest = {
         "1": testJ1Value,
-        "2": testJ1For3Particles,
-        "3": testJ1Fig1MACKOWSKI,
+        "2": partial(testJ1For3Particles, returnTimeBool),
+        "3": partial(testJ1Fig1MACKOWSKI, returnTimeBool),
         "4": testJ1Fig2MACKOWSKI
     }
 
-    case = switch.get(numberTest)
+    case = switchFuncsTest.get(numberTest)
     case()
-
-    # testJ1Value()
-    # testJ1For3Particles()
-    # testJ1Fig1MACKOWSKI()
-    # testJ1Fig2MACKOWSKI()
