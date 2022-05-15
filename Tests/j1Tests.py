@@ -3,9 +3,11 @@ sys.path.append('./')
 
 from asymmetryFactorJ1 import *
 from Tests.helperFunctionsToTests import plotFunctions
+
 import numpy as np
-from timeit import default_timer as timer
 from functools import partial
+from timeit import default_timer as timer
+
 
 
 mili = 10**(-3)
