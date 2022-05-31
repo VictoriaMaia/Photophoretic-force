@@ -3,7 +3,7 @@ sys.path.append('./')
 
 from asymmetryFactorJ1 import *
 from asymmetryFactorJ1.gaussianBeam import *
-from Tests.helperFunctionsToTests import plotFunctions
+from Tests.helperFunctionsToTests import plotFunctions, timeConvert
 
 import math
 import numpy as np
@@ -16,6 +16,7 @@ from timeit import default_timer as timer
 mili = 10**(-3)
 micro = 10**(-6) 
 nano = 10**(-9)
+orange = '#ff6800'
 
 
 # yLabel = J1
@@ -45,7 +46,7 @@ def testJ1GaussianBeamWithJ1PlaneWave(returnTimeBool):
     resultsBlackJ1 = []
 
     totalTime = 0
-    pbar = tqdm(colour="blue", total=len(x), desc="Test 1. Calculating")
+    pbar = tqdm(colour=orange, total=len(x), desc="Test 1. Calculating")
 
     for i in x:
         timeBegin = timer()
@@ -66,7 +67,7 @@ def testJ1GaussianBeamWithJ1PlaneWave(returnTimeBool):
     pbar.close()
     
     if returnTimeBool:
-        print(totalTime)
+        timeConvert.convertTimeToMoreReadable(totalTime)
 
     resultsToPlot = []
 
@@ -154,7 +155,7 @@ def testJ1GaussianWithPlaneWaveVaryingSValue(returnTimeBool):
     resultsX8J1 = []
 
     totalTime = 0
-    pbar = tqdm(colour="blue", total=len(s), desc="Test 2. Calculating")
+    pbar = tqdm(colour=orange, total=len(s), desc="Test 2. Calculating")
 
 
     for i in s:
@@ -174,7 +175,7 @@ def testJ1GaussianWithPlaneWaveVaryingSValue(returnTimeBool):
 
     
     if returnTimeBool:
-        print(totalTime)
+        timeConvert.convertTimeToMoreReadable(totalTime)
 
 
     resultsToPlot = []
@@ -266,7 +267,7 @@ def testJ1GaussianVaryingSAndZ0AndXValues(returnTimeBool):
     resultsX8s016 = []
 
     totalTime = 0
-    pbar1 = tqdm(colour="orange", total=len(z0fig1), desc="Test 3.1. Calculating")
+    pbar1 = tqdm(colour=orange, total=len(z0fig1), desc="Test 3.1. Calculating")
     
     for i in z0fig1:
         timeBegin = timer()
@@ -282,11 +283,11 @@ def testJ1GaussianVaryingSAndZ0AndXValues(returnTimeBool):
     pbar1.close()
 
     if returnTimeBool:
-        print(totalTime)
+        timeConvert.convertTimeToMoreReadable(totalTime)
 
 
     totalTime = 0
-    pbar2 = tqdm(colour="blue", total=len(z0fig2), desc="Test 3.2. Calculating")
+    pbar2 = tqdm(colour=orange, total=len(z0fig2), desc="Test 3.2. Calculating")
 
     for i in z0fig2:
         timeBegin = timer()
@@ -302,11 +303,11 @@ def testJ1GaussianVaryingSAndZ0AndXValues(returnTimeBool):
     pbar2.close()
 
     if returnTimeBool:
-        print(totalTime)
+        timeConvert.convertTimeToMoreReadable(totalTime)
 
     
     totalTime = 0
-    pbar3 = tqdm(colour="blue", total=len(z0fig3), desc="Test 3.3. Calculating")
+    pbar3 = tqdm(colour=orange, total=len(z0fig3), desc="Test 3.3. Calculating")
     
     for i in z0fig3:
         timeBegin = timer()
@@ -322,7 +323,7 @@ def testJ1GaussianVaryingSAndZ0AndXValues(returnTimeBool):
     pbar3.close()
     
     if returnTimeBool:
-        print(totalTime)
+        timeConvert.convertTimeToMoreReadable(totalTime)
 
     
     z0fig1 = np.linspace(-15, 15, qntPoints)
@@ -385,7 +386,7 @@ def testJ1GaussianWithPlaneWaveVaryingXValue(returnTimeBool):
 
 
     totalTime = 0
-    pbar = tqdm(colour="blue", total=len(x), desc="Test 4. Calculating")
+    pbar = tqdm(colour=orange, total=len(x), desc="Test 4. Calculating")
 
     for i in x:
         timeBegin = timer()
@@ -404,7 +405,7 @@ def testJ1GaussianWithPlaneWaveVaryingXValue(returnTimeBool):
 
     
     if returnTimeBool:
-        print(totalTime)
+        timeConvert.convertTimeToMoreReadable(totalTime)
 
 
     resultsToPlot = []
