@@ -1,14 +1,15 @@
 from asymmetryFactorJ1.mathFunctions import mathFuncs as rb
 
-def Dn (u_r, M, ka, n):
+
+def var_d_n(u_r, m, ka, n):
     chi_ka = rb.ricattiBessel_hn(n, ka)
-    chiD_ka = rb.ricattiBessel_hn_derivative(n, ka)
+    chi_d_ka = rb.ricattiBessel_hn_derivative(n, ka)
     psi_ka = rb.ricattiBessel_jn(n, ka)
-    psi_Mka = rb.ricattiBessel_jn(n, (M*ka))
-    psiD_ka = rb.ricattiBessel_jn_derivative(n, ka)
-    psiD_Mka = rb.ricattiBessel_jn_derivative(n, (M*ka))
+    psi_m_ka = rb.ricattiBessel_jn(n, (m*ka))
+    psi_d_ka = rb.ricattiBessel_jn_derivative(n, ka)
+    psi_d_m_ka = rb.ricattiBessel_jn_derivative(n, (m*ka))
     
-    num = M * M * ((chi_ka * psiD_ka) - (chiD_ka * psi_ka))
-    den = (M * chi_ka * psiD_Mka) - (u_r * chiD_ka * psi_Mka)
+    num = m * m * ((chi_ka * psi_d_ka) - (chi_d_ka * psi_ka))
+    den = (m * chi_ka * psi_d_m_ka) - (u_r * chi_d_ka * psi_m_ka)
     
     return num/den

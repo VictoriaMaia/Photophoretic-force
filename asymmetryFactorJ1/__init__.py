@@ -1,3 +1,5 @@
 from .j1 import *
+from .structures import *
 
-__all__ = ["J1_attributes", "J1", "J1Gauss"]
+
+__all__ = ["j1"]

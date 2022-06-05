@@ -3,13 +3,13 @@ sys.path.append('./')
 from asymmetryFactorJ1.variables import nMax as n
 
 if __name__ == '__main__':
-    nMax = n.ceilingX(20)
+    n_max = n.ceilingX(20)
     
-    nMaxExpected = 33
+    n_maxExpected = 33
     
-    if nMax != nMaxExpected:
-        print("The nMax is wrong!!!") 
-        print("Expected: ", nMaxExpected)
-        print("Current: ", nMax)
+    if n_max != n_maxExpected:
+        print("The n_max is wrong!!!") 
+        print("Expected: ", n_maxExpected)
+        print("Current: ", n_max)
     else:
-        print("The nMax is correct!!!") 
+        print("The n_max is correct!!!")

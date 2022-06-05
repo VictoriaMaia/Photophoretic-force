@@ -1,17 +1,18 @@
+from tqdm import tqdm
+from functools import partial
+from timeit import default_timer as timer
+
 import sys
 sys.path.append('./')
 
 from asymmetryFactorJ1 import *
-from asymmetryFactorJ1.gaussianBeam import *
 from Tests.helperFunctionsToTests import plotFunctions, timeConvert
+import asymmetryFactorJ1.gaussianBeam.gauss_parameters as gs
+import asymmetryFactorJ1.structures.j1_parameters as sj
 
 import math
 import numpy as np
-from tqdm import tqdm
-from functools import partial
 import matplotlib.pyplot as plt
-from timeit import default_timer as timer
-
 
 mili = 10**(-3)
 micro = 10**(-6) 
@@ -22,124 +23,105 @@ orange = '#ff6800'
 # yLabel = J1
 # xLabel = x [0.01 to 20]
 # To:
-    # m =[ 1.57 - 0.038j, 
-         # 1.57 - 0.19j, 
-         # 1.57 - 0.95j ]
-def testJ1GaussianBeamWithJ1PlaneWave(returnTimeBool):
-    l = 10.63 * micro 
-    k = (2*math.pi) / l
+# m =[1.57 - 0.038j,
+#     1.57 - 0.19j,
+#     1.57 - 0.95j ]
+def test_j1_gaussian_beam_with_j1_plane_wave(return_time_bool):
+    var_lambda = 10.63 * micro
+    k = (2*math.pi) / var_lambda
     z0 = 0
     s = 0.1
     ur = 1 
-    mBlue = 1.57 - 0.038j
-    mRed = 1.57 - 0.19j
-    mBlack = 1.57 - 0.95j
+    m_blue = 1.57 - 0.038j
+    m_red = 1.57 - 0.19j
+    m_black = 1.57 - 0.95j
 
     x = np.linspace(0.01, 20, 300)
 
+    results_blue_j1_gb = []
+    results_red_j1_gb = []
+    results_black_j1_gb = []
+    results_blue_j1 = []
+    results_red_j1 = []
+    results_black_j1 = []
 
-    resultsBlueJ1GB = []
-    resultsRedJ1GB = []
-    resultsBlackJ1GB = []
-    resultsBlueJ1 = []
-    resultsRedJ1 = []
-    resultsBlackJ1 = []
-
-    totalTime = 0
+    total_time = 0
     pbar = tqdm(colour=orange, total=len(x), desc="Test 1. Calculating")
 
     for i in x:
-        timeBegin = timer()
+        time_begin = timer()
 
-        resultsBlueJ1GB.append(J1(J1Gauss(i, mBlue, ur, k, z0, s)))
-        resultsRedJ1GB.append(J1(J1Gauss(i, mRed, ur, k, z0, s)))
-        resultsBlackJ1GB.append(J1(J1Gauss(i, mBlack, ur, k, z0, s)))
-        resultsBlueJ1.append(J1(J1_attributes(i, mBlue, ur)))
-        resultsRedJ1.append(J1(J1_attributes(i, mRed, ur)))
-        resultsBlackJ1.append(J1(J1_attributes(i, mBlack, ur)))
+        results_blue_j1_gb.append(j1(gs.J1Gauss(i, m_blue, ur, k, z0, s)))
+        results_red_j1_gb.append(j1(gs.J1Gauss(i, m_red, ur, k, z0, s)))
+        results_black_j1_gb.append(j1(gs.J1Gauss(i, m_black, ur, k, z0, s)))
+        results_blue_j1.append(j1(sj.J1Attributes(i, m_blue, ur)))
+        results_red_j1.append(j1(sj.J1Attributes(i, m_red, ur)))
+        results_black_j1.append(j1(sj.J1Attributes(i, m_black, ur)))
 
-
-        timeEnd = timer()
-        totalTime += timeEnd - timeBegin
+        time_end = timer()
+        total_time += time_end - time_begin
         pbar.update()
 
     pbar.refresh()
     pbar.close()
     
-    if returnTimeBool:
-        timeConvert.convertTimeToMoreReadable(totalTime)
+    if return_time_bool:
+        timeConvert.convert_time_to_more_readable(total_time)
 
-    resultsToPlot = []
-
-    resultsToPlot.append(plotFunctions.ResultsGraficAttributes(
-                            resultsBlueJ1GB, 
+    results_to_plot = [plotFunctions.ResultsGraphicAttributes(
+                            results_blue_j1_gb, 
                             'b', 
                             label="GB",
-                            xLocText=12.5, 
-                            yLocText=.03, 
-                            messageText="M = 1.57 - i0.038")
-                        )
-    
-    resultsToPlot.append(plotFunctions.ResultsGraficAttributes(
-                            resultsBlueJ1, 
+                            x_loc_text=12.5, 
+                            y_loc_text=.03, 
+                            message_text="M = 1.57 - i0.038"),
+                       plotFunctions.ResultsGraphicAttributes(
+                            results_blue_j1, 
                             'b-.', 
-                            label="OP ($g_n$ = 1)")                            
-                        )
-
-    resultsToPlot.append(plotFunctions.ResultsGraficAttributes(
-                            resultsRedJ1, 
+                            label="OP ($g_n$ = 1)"),
+                       plotFunctions.ResultsGraphicAttributes(
+                            results_red_j1, 
                             'r-.', 
-                            label="OP")                          
-                        )
-
-    resultsToPlot.append(plotFunctions.ResultsGraficAttributes(
-                            resultsBlackJ1, 
+                            label="OP"),
+                       plotFunctions.ResultsGraphicAttributes(
+                            results_black_j1, 
                             'g-.', 
-                            label="OP")                          
-                        )
-
-    resultsToPlot.append(plotFunctions.ResultsGraficAttributes(
-                            resultsRedJ1GB, 
+                            label="OP"),
+                       plotFunctions.ResultsGraphicAttributes(
+                            results_red_j1_gb, 
                             'r', 
                             label="GB",
-                            xLocText=10, 
-                            yLocText=-0.1, 
-                            messageText="M = 1.57 - i0.19")
-                        )
-
-    resultsToPlot.append(plotFunctions.ResultsGraficAttributes(
-                            resultsBlackJ1GB, 
+                            x_loc_text=10, 
+                            y_loc_text=-0.1, 
+                            message_text="M = 1.57 - i0.19"),
+                       plotFunctions.ResultsGraphicAttributes(
+                            results_black_j1_gb, 
                             'g', 
                             label="GB",
-                            xLocText=7.5, 
-                            yLocText=-.33, 
-                            messageText="M = 1.57 - i0.95")
-                        )
+                            x_loc_text=7.5, 
+                            y_loc_text=-.33, 
+                            message_text="M = 1.57 - i0.95")]
 
-
-    graficInfo = plotFunctions.GraficAttributes(
-                            imagSizeX = 7, 
-                            imagSizeY = 5, 
-                            xLabel = 'Size Parameter x', 
-                            yLabel = 'Asymmetry Factor $J_1(x)$', 
-                )
+    graphic_info = plotFunctions.GraphicAttributes(
+                            image_size_x=7,
+                            image_size_y=5,
+                            x_label='Size Parameter x',
+                            y_label='Asymmetry Factor $J_1(x)$')
     
-    
-    plotFunctions.PlotGraphic (resultsToPlot,
-                                graficInfo,
-                                x,
-                                text=True,
-                                )
+    plotFunctions.plot_graphic(results_to_plot,
+                               graphic_info,
+                               x,
+                               text=True)
 
 
 # yLabel = J1
 # xLabel = s [0.01 to 0.16]
 # To:
-    # m = 1.57 - 0.038j
-    # x = [3, 8]
-def testJ1GaussianWithPlaneWaveVaryingSValue(returnTimeBool):
-    l = 10.63 * micro 
-    k = (2*math.pi) / l
+#    m = 1.57 - 0.038j
+#    x = [3, 8]
+def test_j1_gaussian_with_plane_wave_varying_s__value(return_time_bool):
+    var_lambda = 10.63 * micro
+    k = (2*math.pi) / var_lambda
     z0 = 0
     ur = 1
     m = 1.57 - 0.038j
@@ -148,97 +130,79 @@ def testJ1GaussianWithPlaneWaveVaryingSValue(returnTimeBool):
 
     s = np.linspace(0.01, 0.16, 300)
 
+    results_x3_j1_gb = []
+    results_x8_j1_gb = []
+    results_x3_j1 = []
+    results_x8_j1 = []
 
-    resultsX3J1GB = []
-    resultsX8J1GB = []
-    resultsX3J1 = []
-    resultsX8J1 = []
-
-    totalTime = 0
+    total_time = 0
     pbar = tqdm(colour=orange, total=len(s), desc="Test 2. Calculating")
 
-
     for i in s:
-        timeBegin = timer()
+        time_begin = timer()
 
-        resultsX3J1GB.append(J1(J1Gauss(x3, m, ur, k, z0, i)))
-        resultsX8J1GB.append(J1(J1Gauss(x8, m, ur, k, z0, i)))
-        resultsX3J1.append(J1(J1_attributes(x3, m, ur)))
-        resultsX8J1.append(J1(J1_attributes(x8, m, ur)))
+        results_x3_j1_gb.append(j1(gs.J1Gauss(x3, m, ur, k, z0, i)))
+        results_x8_j1_gb.append(j1(gs.J1Gauss(x8, m, ur, k, z0, i)))
+        results_x3_j1.append(j1(sj.J1Attributes(x3, m, ur)))
+        results_x8_j1.append(j1(sj.J1Attributes(x8, m, ur)))
        
-        timeEnd = timer()
-        totalTime += timeEnd - timeBegin
+        time_end = timer()
+        total_time += time_end - time_begin
         pbar.update()
 
     pbar.refresh()
     pbar.close()
-
     
-    if returnTimeBool:
-        timeConvert.convertTimeToMoreReadable(totalTime)
+    if return_time_bool:
+        timeConvert.convert_time_to_more_readable(total_time)
 
-
-    resultsToPlot = []
-
-    resultsToPlot.append(plotFunctions.ResultsGraficAttributes(
-                            resultsX3J1GB, 
+    results_to_plot = [plotFunctions.ResultsGraphicAttributes(
+                            results_x3_j1_gb, 
                             'k', 
                             label="GB",
-                            xLocText=0.1, 
-                            yLocText=.045, 
-                            messageText="x=3"
-                            )
-                        )
-    
-    resultsToPlot.append(plotFunctions.ResultsGraficAttributes(
-                            resultsX3J1, 
+                            x_loc_text=0.1, 
+                            y_loc_text=.045, 
+                            message_text="x=3"
+                            ),
+                       plotFunctions.ResultsGraphicAttributes(
+                            results_x3_j1, 
                             'k-.', 
-                            label="OP ($g_n$ = 1)")                            
-                        )
-
-    resultsToPlot.append(plotFunctions.ResultsGraficAttributes(
-                            resultsX8J1GB, 
+                            label="OP ($g_n$ = 1)"),
+                       plotFunctions.ResultsGraphicAttributes(
+                            results_x8_j1_gb, 
                             'b', 
                             label="GB",
-                            xLocText=0.06, 
-                            yLocText=.02, 
-                            messageText="x=8")                          
-                        )
-
-    resultsToPlot.append(plotFunctions.ResultsGraficAttributes(
-                            resultsX8J1, 
+                            x_loc_text=0.06, 
+                            y_loc_text=.02, 
+                            message_text="x=8"),
+                       plotFunctions.ResultsGraphicAttributes(
+                            results_x8_j1, 
                             'b-.', 
-                            label="OP")                          
-                        )
+                            label="OP")]
 
-    
-    graficInfo = plotFunctions.GraficAttributes(
-                            imagSizeX = 7, 
-                            imagSizeY = 5, 
-                            xLabel = 'Confinement factor s', 
-                            yLabel = 'Asymmetry Factor $J_1(x)$', 
-                )
-    
-    
-    plotFunctions.PlotGraphic (resultsToPlot,
-                                graficInfo,
-                                s,
-                                text=True,
-                                )
+    graphic_info = plotFunctions.GraphicAttributes(
+                            image_size_x=7,
+                            image_size_y=5,
+                            x_label='Confinement factor s',
+                            y_label='Asymmetry Factor $J_1(x)$')
+
+    plotFunctions.plot_graphic(results_to_plot,
+                               graphic_info,
+                               s,
+                               text=True)
 
 
 # yLabel = J1
 # xLabel = z0fig1 [-15mili to 15mili]
-         # z0fig2 [-150mili to 150mili]
-         # z0fig3 [-60mili to 60mili]
+#          z0fig2 [-150mili to 150mili]
+#          z0fig3 [-60mili to 60mili]
 # To:
     # m = 1.57 - 0.038j
     # s = [0.01, 0.10, 0.16]
     # x = [0.1, 3, 8]
-def testJ1GaussianVaryingSAndZ0AndXValues(returnTimeBool):
-    l = 10.63 * micro 
-    k = (2*math.pi) / l
-    z0 = 0
+def test_j1_gaussian_varying_s_and_z0_and_x_values(return_time_bool):
+    var_lambda = 10.63 * micro
+    k = (2*math.pi) / var_lambda
     ur = 1
     m = 1.57 - 0.038j
 
@@ -248,93 +212,90 @@ def testJ1GaussianVaryingSAndZ0AndXValues(returnTimeBool):
     x3 = 3
     x8 = 8
 
-    qntPoints = 300
+    qnt_points = 300
     
-    z0fig1 = np.linspace(-15*mili, 15*mili, qntPoints)
-    z0fig2 = np.linspace(-150*micro, 150*micro, qntPoints)
-    z0fig3 = np.linspace(-60*micro, 60*micro, qntPoints)
+    z0fig1 = np.linspace(-15*mili, 15*mili, qnt_points)
+    z0fig2 = np.linspace(-150*micro, 150*micro, qnt_points)
+    z0fig3 = np.linspace(-60*micro, 60*micro, qnt_points)
 
-    resultsX1s001 = []
-    resultsX3s001 = []
-    resultsX8s001 = []
+    results_x1_s001 = []
+    results_x3_s001 = []
+    results_x8_s001 = []
 
-    resultsX1s01 = []
-    resultsX3s01 = []
-    resultsX8s01 = []
+    results_x1_s01 = []
+    results_x3_s01 = []
+    results_x8_s01 = []
 
-    resultsX1s016 = []
-    resultsX3s016 = []
-    resultsX8s016 = []
+    results_x1_s016 = []
+    results_x3_s016 = []
+    results_x8_s016 = []
 
-    totalTime = 0
+    total_time = 0
     pbar1 = tqdm(colour=orange, total=len(z0fig1), desc="Test 3.1. Calculating")
     
     for i in z0fig1:
-        timeBegin = timer()
+        time_begin = timer()
 
-        resultsX1s001.append(J1(J1Gauss(x1, m, ur, k, i, s[0]))*10000)
-        resultsX3s001.append(J1(J1Gauss(x3, m, ur, k, i, s[0])))
-        resultsX8s001.append(J1(J1Gauss(x8, m, ur, k, i, s[0])))
+        results_x1_s001.append(j1(gs.J1Gauss(x1, m, ur, k, i, s[0]))*10000)
+        results_x3_s001.append(j1(gs.J1Gauss(x3, m, ur, k, i, s[0])))
+        results_x8_s001.append(j1(gs.J1Gauss(x8, m, ur, k, i, s[0])))
         
-        timeEnd = timer()
-        totalTime += timeEnd - timeBegin
+        time_end = timer()
+        total_time += time_end - time_begin
         pbar1.update()
 
     pbar1.close()
 
-    if returnTimeBool:
-        timeConvert.convertTimeToMoreReadable(totalTime)
+    if return_time_bool:
+        timeConvert.convert_time_to_more_readable(total_time)
 
-
-    totalTime = 0
+    total_time = 0
     pbar2 = tqdm(colour=orange, total=len(z0fig2), desc="Test 3.2. Calculating")
 
     for i in z0fig2:
-        timeBegin = timer()
+        time_begin = timer()
 
-        resultsX1s01.append(J1(J1Gauss(x1, m, ur, k, i, s[1]))*5000)
-        resultsX3s01.append(J1(J1Gauss(x3, m, ur, k, i, s[1])))
-        resultsX8s01.append(J1(J1Gauss(x8, m, ur, k, i, s[1])))
+        results_x1_s01.append(j1(gs.J1Gauss(x1, m, ur, k, i, s[1]))*5000)
+        results_x3_s01.append(j1(gs.J1Gauss(x3, m, ur, k, i, s[1])))
+        results_x8_s01.append(j1(gs.J1Gauss(x8, m, ur, k, i, s[1])))
      
-        timeEnd = timer()
-        totalTime += timeEnd - timeBegin
+        time_end = timer()
+        total_time += time_end - time_begin
         pbar2.update()
 
     pbar2.close()
 
-    if returnTimeBool:
-        timeConvert.convertTimeToMoreReadable(totalTime)
+    if return_time_bool:
+        timeConvert.convert_time_to_more_readable(total_time)
 
-    
-    totalTime = 0
+    total_time = 0
     pbar3 = tqdm(colour=orange, total=len(z0fig3), desc="Test 3.3. Calculating")
     
     for i in z0fig3:
-        timeBegin = timer()
+        time_begin = timer()
 
-        resultsX1s016.append(J1(J1Gauss(x1, m, ur, k, i, s[2]))*1000)
-        resultsX3s016.append(J1(J1Gauss(x3, m, ur, k, i, s[2])))
-        resultsX8s016.append(J1(J1Gauss(x8, m, ur, k, i, s[2])))
+        results_x1_s016.append(j1(gs.J1Gauss(x1, m, ur, k, i, s[2]))*1000)
+        results_x3_s016.append(j1(gs.J1Gauss(x3, m, ur, k, i, s[2])))
+        results_x8_s016.append(j1(gs.J1Gauss(x8, m, ur, k, i, s[2])))
         
-        timeEnd = timer()
-        totalTime += timeEnd - timeBegin
+        time_end = timer()
+        total_time += time_end - time_begin
         pbar3.update()
     
     pbar3.close()
     
-    if returnTimeBool:
-        timeConvert.convertTimeToMoreReadable(totalTime)
+    if return_time_bool:
+        timeConvert.convert_time_to_more_readable(total_time)
 
-    
-    z0fig1 = np.linspace(-15, 15, qntPoints)
-    z0fig2 = np.linspace(-150, 150, qntPoints)
-    z0fig3 = np.linspace(-60, 60, qntPoints)
+    z0fig1 = np.linspace(-15, 15, qnt_points)
+    z0fig2 = np.linspace(-150, 150, qnt_points)
+    z0fig3 = np.linspace(-60, 60, qnt_points)
 
     fig, (fig1, fig2, fig3) = plt.subplots(1, 3, figsize=(17, 5))
 
-    fig1.plot(z0fig1, resultsX1s001, 'b', label= "x = 0.1 * 10000 ")
-    fig1.plot(z0fig1, resultsX3s001, 'r', label= "x = 3")
-    fig1.plot(z0fig1, resultsX8s001, 'g', label= "x = 8")
+    fig1.plot(z0fig1, results_x1_s001, 'b', label="x = 0.1 * 10000 ")
+    fig1.plot(z0fig1, results_x3_s001, 'r', label="x = 3")
+    fig1.plot(z0fig1, results_x8_s001, 'g', label="x = 8")
     fig1.grid(True)
     fig1.set_xlabel('Relative position $z_0$ (mm)')
     fig1.set_ylabel('Asymmetry Factor J1')
@@ -342,9 +303,9 @@ def testJ1GaussianVaryingSAndZ0AndXValues(returnTimeBool):
     fig1.text(0, .055, '$x=3$')
     fig1.text(0, -.02, '$x=0.1*(10^4)$')
 
-    fig2.plot(z0fig2, resultsX1s01, 'b', label= "x = 0.1 * 5000 ")
-    fig2.plot(z0fig2, resultsX3s01, 'r', label= "x = 3")
-    fig2.plot(z0fig2, resultsX8s01, 'g', label= "x = 8")
+    fig2.plot(z0fig2, results_x1_s01, 'b', label="x = 0.1 * 5000 ")
+    fig2.plot(z0fig2, results_x3_s01, 'r', label="x = 3")
+    fig2.plot(z0fig2, results_x8_s01, 'g', label="x = 8")
     fig2.grid(True)
     fig2.set_xlabel('Relative position $z_0$ ($\mu_m$)')
     fig2.set_ylabel('Asymmetry Factor J1')
@@ -352,9 +313,9 @@ def testJ1GaussianVaryingSAndZ0AndXValues(returnTimeBool):
     fig2.text(0, .04, '$x=3$')
     fig2.text(-60, -.01, '$x=0.1*5000$')
 
-    fig3.plot(z0fig3, resultsX1s016, 'b', label= "x = 0.1 * 1000 ")
-    fig3.plot(z0fig3, resultsX3s016, 'r', label= "x = 3")
-    fig3.plot(z0fig3, resultsX8s016, 'g', label= "x = 8")
+    fig3.plot(z0fig3, results_x1_s016, 'b', label="x = 0.1 * 1000 ")
+    fig3.plot(z0fig3, results_x3_s016, 'r', label="x = 3")
+    fig3.plot(z0fig3, results_x8_s016, 'g', label="x = 8")
     fig3.grid(True)
     fig3.set_xlabel('Relative position $z_0$ ($\mu_m$)')
     fig3.set_ylabel('Asymmetry Factor J1')
@@ -370,107 +331,93 @@ def testJ1GaussianVaryingSAndZ0AndXValues(returnTimeBool):
 # To:
     # m = 1.57 - 0.038j
     # s = [0.1, 0.05, 0.01]
-def testJ1GaussianWithPlaneWaveVaryingXValue(returnTimeBool):
-    l = 10.63 * micro 
-    k = (2*math.pi) / l
+def test_j1_gaussian_with_plane_wave_varying_x_value(return_time_bool):
+    var_lambda = 10.63 * micro
+    k = (2*math.pi) / var_lambda
     z0 = 0
     m = 1.57 - 0.038j
 
     x = np.linspace(20, 100, 300)
     ur = 1
 
-    resultsS0J1GB = []
-    resultsS1J1GB = []
-    resultsS2J1GB = []
-    resultsJ1 = []
+    results_s0_j1_gb = []
+    results_s1_j1_gb = []
+    results_s2_j1_gb = []
+    results_j1 = []
 
-
-    totalTime = 0
+    total_time = 0
     pbar = tqdm(colour=orange, total=len(x), desc="Test 4. Calculating")
 
     for i in x:
-        timeBegin = timer()
+        time_begin = timer()
 
-        resultsS0J1GB.append(J1(J1Gauss(i, m, ur, k, z0, 0.1)))
-        resultsS1J1GB.append(J1(J1Gauss(i,  m, ur, k, z0, 0.05)))
-        resultsS2J1GB.append(J1(J1Gauss(i,  m, ur, k, z0, 0.01)))
-        resultsJ1.append(J1(J1_attributes(i, m, ur)))
+        results_s0_j1_gb.append(j1(gs.J1Gauss(i, m, ur, k, z0, 0.1)))
+        results_s1_j1_gb.append(j1(gs.J1Gauss(i,  m, ur, k, z0, 0.05)))
+        results_s2_j1_gb.append(j1(gs.J1Gauss(i,  m, ur, k, z0, 0.01)))
+        results_j1.append(j1(sj.J1Attributes(i, m, ur)))
 
-        timeEnd = timer()
-        totalTime += timeEnd - timeBegin
+        time_end = timer()
+        total_time += time_end - time_begin
         pbar.update()
 
     pbar.refresh()
     pbar.close()
 
-    
-    if returnTimeBool:
-        timeConvert.convertTimeToMoreReadable(totalTime)
+    if return_time_bool:
+        timeConvert.convert_time_to_more_readable(total_time)
 
-
-    resultsToPlot = []
-
-    resultsToPlot.append(plotFunctions.ResultsGraficAttributes(
-                            resultsJ1, 
+    results_to_plot = [plotFunctions.ResultsGraphicAttributes(
+                            results_j1, 
                             'k-.', 
-                            label="OP")
-                        )
-    
-    resultsToPlot.append(plotFunctions.ResultsGraficAttributes(
-                            resultsS0J1GB, 
+                            label="OP"),
+                       plotFunctions.ResultsGraphicAttributes(
+                            results_s0_j1_gb, 
                             'g', 
-                            label="s=0.1")                            
-                        )
-
-    resultsToPlot.append(plotFunctions.ResultsGraficAttributes(
-                            resultsS1J1GB, 
+                            label="s=0.1"),
+                       plotFunctions.ResultsGraphicAttributes(
+                            results_s1_j1_gb, 
                             'r', 
-                            label="s=0.05")
-                        )
-
-    resultsToPlot.append(plotFunctions.ResultsGraficAttributes(
-                            resultsS2J1GB, 
+                            label="s=0.05"),
+                       plotFunctions.ResultsGraphicAttributes(
+                            results_s2_j1_gb, 
                             'b', 
-                            label="s=0.01")                          
-                        )
+                            label="s=0.01")]
 
-    
-    graficInfo = plotFunctions.GraficAttributes(
-                            imagSizeX = 7, 
-                            imagSizeY = 5, 
-                            xLabel = 'Size parameter x', 
-                            yLabel = 'Asymmetry Factor $J_1(x)$', 
+    graphic_info = plotFunctions.GraphicAttributes(
+                            image_size_x=7,
+                            image_size_y=5,
+                            x_label='Size parameter x',
+                            y_label='Asymmetry Factor $J_1(x)$',
                 )
-    
-    
-    plotFunctions.PlotGraphic (resultsToPlot,
-                                graficInfo,
-                                xValues=x,
-                                legend=True
-                                )
+
+    plotFunctions.plot_graphic(results_to_plot,
+                               graphic_info,
+                               x_values=x,
+                               legend=True
+                               )
 
 
-def testAllJ1Gaussian(returnTimeBool):
+def test_all_j1_gaussian(return_time_bool):
     
     print("--------- Test 1: Gauss x PW to 3 particles ----------")
-    testJ1GaussianBeamWithJ1PlaneWave(returnTimeBool)
+    test_j1_gaussian_beam_with_j1_plane_wave(return_time_bool)
     
     print("--------- Test 2: Gauss x PW varying s value to x = [3,8] and m = 1.57 - 0.038j ----------")
-    testJ1GaussianWithPlaneWaveVaryingSValue(returnTimeBool)
+    test_j1_gaussian_with_plane_wave_varying_s__value(return_time_bool)
 
     print("--------- Test 3: Gauss varying z0 values to different s and x values. NOTE.. are 3 graphics ----------")
-    testJ1GaussianVaryingSAndZ0AndXValues(returnTimeBool)
+    test_j1_gaussian_varying_s_and_z0_and_x_values(return_time_bool)
 
     print("--------- Test 4: Gauss x PW varying x value to s = [0.1, 0.05, 0.01] ----------")
-    testJ1GaussianWithPlaneWaveVaryingXValue(returnTimeBool)
+    test_j1_gaussian_with_plane_wave_varying_x_value(return_time_bool)
 
 
 if __name__ == '__main__':
     print("We have these tests.")
-    print("1 - testJ1GaussianBeamWithJ1PlaneWave")
-    print("2 - testJ1GaussianWithPlaneWaveVaryingSValue")
-    print("3 - testJ1GaussianVaryingSAndZ0AndXValues")
-    print("4 - testJ1GaussianWithPlaneWaveVaryingXValue")
+    print("1 - test_j1_gaussian_beam_with_j1_plane_wave")
+    print("2 - test_j1_gaussian_with_plane_wave_varying_s__value")
+    print("3 - test_j1_gaussian_varying_s_and_z0_and_x_values")
+    print("4 - test_j1_gaussian_with_plane_wave_varying_x_value")
     print("5 - All")
 
     numberTest = input("Which will execute? Please write the number: ")
@@ -481,14 +428,14 @@ if __name__ == '__main__':
         "n": False,
     }
     
-    returnTimeBool = switchRunTime.get(returnTime)
+    return_time_boolean = switchRunTime.get(returnTime)
     
     switchFuncsTest = {
-        "1": partial(testJ1GaussianBeamWithJ1PlaneWave, returnTimeBool),
-        "2": partial(testJ1GaussianWithPlaneWaveVaryingSValue, returnTimeBool),
-        "3": partial(testJ1GaussianVaryingSAndZ0AndXValues, returnTimeBool),
-        "4": partial(testJ1GaussianWithPlaneWaveVaryingXValue, returnTimeBool),
-        "5": partial(testAllJ1Gaussian, returnTimeBool)
+        "1": partial(test_j1_gaussian_beam_with_j1_plane_wave, return_time_boolean),
+        "2": partial(test_j1_gaussian_with_plane_wave_varying_s__value, return_time_boolean),
+        "3": partial(test_j1_gaussian_varying_s_and_z0_and_x_values, return_time_boolean),
+        "4": partial(test_j1_gaussian_with_plane_wave_varying_x_value, return_time_boolean),
+        "5": partial(test_all_j1_gaussian, return_time_boolean)
     }
 
     case = switchFuncsTest.get(numberTest)

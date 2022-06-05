@@ -1,138 +1,140 @@
-from cProfile import label
 import matplotlib.pyplot as plt
 import matplotlib as mpl
 
-color = ['g', 'r', 'b', 'c', 'm', 'y']
+colors = ['g', 'r', 'b', 'c', 'm', 'y']
 
-def PlotGraphicMath (n, title, variable, results, z, yLowerLimit, yUpperLimit) :
-    plt.figure(figsize=[10,5])
+
+def plot_graphic_math(n, title, variable, results, z, y_lower_limit, y_upper_limit):
+    plt.figure(figsize=[10, 5])
     for i in n:
-        labelStr = variable + '_'+ str(i) + '(x)'
-        plt.plot(z, results[i], color[i], label=labelStr)
+        label_str = variable + '_' + str(i) + '(x)'
+        plt.plot(z, results[i], colors[i], label=label_str)
     plt.title(title)
     plt.xlabel('x')
     plt.ylabel('y')
-    plt.ylim(yLowerLimit, yUpperLimit)
-    plt.legend(loc='best')
-    plt.grid()
-    plt.show()
-    
-def PlotGraphicRealAndImageParts (title, labelInput, color, results, z, yLowerLimit, yUpperLimit) :
-    plt.figure(figsize=[10,5])
-    plt.plot(z, results.real, color, label=labelInput+' (real)')
-    plt.plot(z, results.imag, color+'-.', label=labelInput+' (imag)')
-    plt.title(title)
-    plt.xlabel('x')
-    plt.ylabel('y')
-    plt.ylim(yLowerLimit, yUpperLimit)
-    plt.legend(loc='best')
-    plt.grid()
-    plt.show()
-
-def PlotGraphicRealAndImagePartsMpmath (title, labelInput, color, resultsReal, resultsImag, z, yLowerLimit, yUpperLimit):
-    plt.figure(figsize=[10,5])
-    plt.plot(z, resultsReal, color, label=labelInput+' (real)')
-    plt.plot(z, resultsImag, color+'-.', label=labelInput+' (imag)')
-    plt.title(title)
-    plt.xlabel('x')
-    plt.ylabel('y')
-    plt.ylim(yLowerLimit, yUpperLimit)
-    plt.legend(loc='best')
-    plt.grid()
-    plt.show()
-    
-def PlotOneGraphic (title, labelInput, color, results, z, yLowerLimit, yUpperLimit, xLabel='x', yLabel='y'):
-    plt.figure(figsize=[10,5])
-    plt.plot(z, results, color, label=labelInput)
-    plt.title(title)
-    plt.xlabel(xLabel)
-    plt.ylabel(yLabel)
-    plt.ylim(yLowerLimit, yUpperLimit)
+    plt.ylim(y_lower_limit, y_upper_limit)
     plt.legend(loc='best')
     plt.grid()
     plt.show()
 
 
-class ResultsGraficAttributes:
-    def __init__(self, results, color, xLocText=0, yLocText=0, messageText="", label="") -> None:
+def plot_graphic_real_and_imaginary_parts(title, label_input, color, results, z, y_lower_limit, y_upper_limit):
+    plt.figure(figsize=[10, 5])
+    plt.plot(z, results.real, color, label=label_input + ' (real)')
+    plt.plot(z, results.imag, color+'-.', label=label_input + ' (imaginary)')
+    plt.title(title)
+    plt.xlabel('x')
+    plt.ylabel('y')
+    plt.ylim(y_lower_limit, y_upper_limit)
+    plt.legend(loc='best')
+    plt.grid()
+    plt.show()
+
+
+def plot_graphic_real_and_imaginary_parts_mpmath(title, label_input, color, results_real, results_imaginary, z,
+                                                 y_lower_limit, y_upper_limit):
+    plt.figure(figsize=[10, 5])
+    plt.plot(z, results_real, color, label=label_input + ' (real)')
+    plt.plot(z, results_imaginary, color+'-.', label=label_input + ' (imaginary)')
+    plt.title(title)
+    plt.xlabel('x')
+    plt.ylabel('y')
+    plt.ylim(y_lower_limit, y_upper_limit)
+    plt.legend(loc='best')
+    plt.grid()
+    plt.show()
+
+
+def plot_one_graphic(title, label_input, color, results, z, y_lower_limit, y_upper_limit, x_label='x', y_label='y'):
+    plt.figure(figsize=[10, 5])
+    plt.plot(z, results, color, label=label_input)
+    plt.title(title)
+    plt.xlabel(x_label)
+    plt.ylabel(y_label)
+    plt.ylim(y_lower_limit, y_upper_limit)
+    plt.legend(loc='best')
+    plt.grid()
+    plt.show()
+
+
+class ResultsGraphicAttributes:
+    def __init__(self, results, color, x_loc_text=0, y_loc_text=0, message_text="", label="") -> None:
         self.results = results
         self.color = color
         self.label = label
-        self.xLocText = xLocText
-        self.yLocText = yLocText
-        self.messageText = messageText
+        self.x_loc_text = x_loc_text
+        self.y_loc_text = y_loc_text
+        self.message_text = message_text
         pass
 
-class GraficAttributes:
-    def __init__(self, imagSizeX, imagSizeY, xLabel, yLabel, title="", yLowerLimit=0, yUpperLimit=0, xLowerLimit=0, xUpperLimit=0 ) -> None:
-        self.imagSizeX = imagSizeX
-        self.imagSizeY = imagSizeY
+
+class GraphicAttributes:
+    def __init__(self, image_size_x, image_size_y, x_label, y_label, title="",
+                 y_lower_limit=0, y_upper_limit=0, x_lower_limit=0, x_upper_limit=0) -> None:
+        self.image_size_x = image_size_x
+        self.image_size_y = image_size_y
         self.title = title
-        self.xLabel = xLabel
-        self.yLabel = yLabel
-        self.yLowerLimit = yLowerLimit
-        self.yUpperLimit = yUpperLimit
-        self.xLowerLimit = xLowerLimit
-        self.xUpperLimit = xUpperLimit
+        self.x_label = x_label
+        self.y_label = y_label
+        self.y_lower_limit = y_lower_limit
+        self.y_upper_limit = y_upper_limit
+        self.x_lower_limit = x_lower_limit
+        self.x_upper_limit = x_upper_limit
         pass
 
 
-def PlotGraphic (resultsToPlot,
-                 graficInfo,
-                 xValues,
+def plot_graphic(results_to_plot,
+                 graphic_info,
+                 x_values,
                  latex=True,
-                 ylimit=False, 
-                 xlimit=False,
+                 y_limit=False,
+                 x_limit=False,
                  text=False,
                  legend=False,
-                 saveFig=False
+                 save_fig=False
                  ):
 
-    if len(resultsToPlot) == 0:
-        print("Error. Don't have grafics to plot")
+    if len(results_to_plot) == 0:
+        print("Error. Don't have graphics to plot")
         return 
 
-    for i in resultsToPlot:
-        if type(i) != ResultsGraficAttributes:
-            print("Error: parameters is not of type class ResultsGraficAttributes. Type returned: ", type(resultsToPlot))
+    for i in results_to_plot:
+        if type(i) != ResultsGraphicAttributes:
+            print("Error: parameters is not of type class ResultsGraphicAttributes. Type returned: ", type(results_to_plot))
             return 0
     
-    if type(graficInfo) != GraficAttributes:
-        print("Error: parameters is not of type class GraficAttributes. Type returned: ", type(graficInfo))
+    if type(graphic_info) != GraphicAttributes:
+        print("Error: parameters is not of type class GraphicAttributes. Type returned: ", type(graphic_info))
         return 0
-        
-    
-    plt.figure(figsize=[graficInfo.imagSizeX, graficInfo.imagSizeY])
+
+    plt.figure(figsize=[graphic_info.image_size_x, graphic_info.image_size_y])
     mpl.rcParams["text.usetex"] = latex
 
-    for i in resultsToPlot:
+    for i in results_to_plot:
         if i.label != "":
-            plt.plot(xValues, i.results, i.color, label=i.label)            
+            plt.plot(x_values, i.results, i.color, label=i.label)
         else:
-            plt.plot(xValues, i.results, i.color)
+            plt.plot(x_values, i.results, i.color)
     
-    plt.title(graficInfo.title)
-    plt.xlabel(graficInfo.xLabel)
-    plt.ylabel(graficInfo.yLabel)
+    plt.title(graphic_info.title)
+    plt.xlabel(graphic_info.x_label)
+    plt.ylabel(graphic_info.y_label)
 
     if legend:
         plt.legend(loc='best')
     
-    if ylimit:
-        plt.ylim(graficInfo.yLowerLimit, graficInfo.yUpperLimit)
+    if y_limit:
+        plt.ylim(graphic_info.y_lower_limit, graphic_info.y_upper_limit)
 
-    if xlimit:
-        plt.xlim(graficInfo.xLowerLimit, graficInfo.xUpperLimit)
+    if x_limit:
+        plt.xlim(graphic_info.x_lower_limit, graphic_info.x_upper_limit)
 
-    if saveFig:
-        plt.savefig(graficInfo.title+".png", format='png', dpi=500)
+    if save_fig:
+        plt.savefig(graphic_info.title+".png", format='png', dpi=500)
     
     if text:
-        for i in resultsToPlot:
-            plt.text(i.xLocText, i.yLocText, i.messageText)
+        for i in results_to_plot:
+            plt.text(i.x_loc_text, i.y_loc_text, i.message_text)
 
     plt.grid()
     plt.show()
-
-
-
