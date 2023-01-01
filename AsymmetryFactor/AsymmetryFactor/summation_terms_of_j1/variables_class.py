@@ -21,15 +21,15 @@ class SummationVariables:
 
 
 def compute_variables(particle_params, i):
-    cn = term_c_n(particle_params.ur, particle_params.M, particle_params.x, i)
+    cn = term_c_n(particle_params.ur, particle_params.m, particle_params.x, i)
     conj_cn = np.conj(cn)
-    cn1 = term_c_n(particle_params.ur, particle_params.M, particle_params.x, (i + 1))
+    cn1 = term_c_n(particle_params.ur, particle_params.m, particle_params.x, (i + 1))
     conj_cn1 = np.conj(cn1)
-    rn = term_r_n(particle_params.M, particle_params.x, i)
-    rn1 = term_r_n(particle_params.M, particle_params.x, (i + 1))
-    dn = term_d_n(particle_params.ur, particle_params.M, particle_params.x, i)
+    rn = term_r_n(particle_params.m, particle_params.x, i)
+    rn1 = term_r_n(particle_params.m, particle_params.x, (i + 1))
+    dn = term_d_n(particle_params.ur, particle_params.m, particle_params.x, i)
     conj_dn = np.conj(dn)
-    dn1 = term_d_n(particle_params.ur, particle_params.M, particle_params.x, (i + 1))
-    sn = term_s_n(particle_params.M, particle_params.x, i)
+    dn1 = term_d_n(particle_params.ur, particle_params.m, particle_params.x, (i + 1))
+    sn = term_s_n(particle_params.m, particle_params.x, i)
 
     return SummationVariables(cn, conj_cn, cn1, conj_cn1, rn, rn1, dn, conj_dn, dn1, sn)

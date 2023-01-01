@@ -13,3 +13,4 @@ Frozen wave
 """
 
 from AsymmetryFactor import summation_terms_of_j1
+# from . import j1
