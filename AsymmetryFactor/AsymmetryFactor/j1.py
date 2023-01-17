@@ -27,6 +27,16 @@ def summation(particle, beam):
             conj_gn = np.conj(gn)
             gn1 = gn_gaussian_beam((i+1), beam.k, beam.z0, beam.s)
             conj_gn1 = np.conj(gn1)
+        elif isinstance(beam, BesselAttributes):
+            gn = gn_bessel_beam(i, beam.k, beam.z0, beam.angle)
+            conj_gn = np.conj(gn)
+            gn1 = gn_bessel_beam((i+1), beam.k, beam.z0, beam.angle)
+            conj_gn1 = np.conj(gn1)
+        elif isinstance(beam, FrozenWaveAttributes):
+            gn = gn_frozen_wave_beam(i, beam.n, beam.k, beam.z0, beam.l, beam.q)
+            conj_gn = np.conj(gn)
+            gn1 = gn_frozen_wave_beam((i+1), beam.n, beam.k, beam.z0, beam.l, beam.q)
+            conj_gn1 = np.conj(gn1)
         else:
             gn = 1
             conj_gn = 1
