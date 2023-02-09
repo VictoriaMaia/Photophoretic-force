@@ -1,1 +1,7 @@
 AsymmetryFactor/AsymmetryFactor/__pycache__/*.pyc
+AsymmetryFactor/AsymmetryFactor/beams/__pycache__/*.pyc
+AsymmetryFactor/AsymmetryFactor/beams/bessel/__pycache__/*.pyc
+AsymmetryFactor/AsymmetryFactor/beams/gaussian/__pycache__/*pyc
+AsymmetryFactor/AsymmetryFactor/beams/frozenwave/__pycache__/*pyc
+AsymmetryFactor/AsymmetryFactor/particle/__pycache__/*pyc
+AsymmetryFactor/AsymmetryFactor/summation_terms_of_j1/__pycache__/*pyc
