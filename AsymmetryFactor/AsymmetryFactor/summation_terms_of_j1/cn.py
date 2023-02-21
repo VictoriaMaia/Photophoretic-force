@@ -8,7 +8,7 @@ def term_c_n(u_r, m, ka, n):
     
     Parameters
     ----------
-    TO DO: verify the information about the parameters
+    TODO: verify the information about the parameters
     u_r : the real part of the particle permeability
     m   : index of refraction of the particle
     ka  : the result of the product of k (wave number) and a (particle radius)

@@ -4,7 +4,7 @@ import math
 def ceiling_x(x):
     """
     Calculates the ceiling of x value.
-    TO DO: describe better, please!
+    TODO: describe better, please!
     
     Parameters
     ----------

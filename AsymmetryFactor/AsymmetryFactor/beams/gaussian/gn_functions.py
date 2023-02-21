@@ -3,7 +3,7 @@ from mpmath import exp
 
 def var_q(z0, s, k):
     """
-    TO DO: add description
+    TODO: add description
     
     Parameters
     ----------
@@ -17,27 +17,27 @@ def var_q(z0, s, k):
     return 1 / (1 + second_term_sub)
 
 
-def gn_gaussian_beam (n, k, z0, s):
-    """
-    TO DO: add description
+# def gn_gaussian_beam (n, k, z0, s):
+#     """
+#     TODO: add description
     
-    Parameters
-    ----------
-    n  :
-    k  :
-    z0 :
-    s  :
-    """
-    i = 1j
+#     Parameters
+#     ----------
+#     n  :
+#     k  :
+#     z0 :
+#     s  :
+#     """
+#     i = 1j
     
-    q = var_q(z0, s, k)
+#     q = var_q(z0, s, k)
     
-    arg_1 = s**2
-    arg_2 = ((n+(1/2))**2)
-    arg_exp = -q*arg_1*arg_2
-    result_exp = exp(arg_exp)
+#     arg_1 = s**2
+#     arg_2 = ((n+(1/2))**2)
+#     arg_exp = -q*arg_1*arg_2
+#     result_exp = exp(arg_exp)
 
-    arg_e = i*k*z0
-    result_e = exp(arg_e)
+#     arg_e = i*k*z0
+#     result_e = exp(arg_e)
     
-    return q*result_exp*result_e
+#     return q*result_exp*result_e

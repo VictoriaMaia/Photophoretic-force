@@ -1,0 +1,42 @@
+{
+    "name": "GBPW2PVS",
+    "full_name": "Gaussian Beam and Plane Wave with 2 Particles Varying values of s",
+    "particle":[
+        {
+            "x" : 3,
+            "m" : "1.57-0.038j",
+            "ur": 1
+        },
+        {
+            "x" : 8,
+            "m" : "1.57-0.038j",
+            "ur": 1
+        }
+    ],
+    "beam": [
+        {
+            "type": "GB",
+            "var_lambda": "10.63*(10**(-6))",
+            "k" : "(2*math.pi) / var_lambda",
+            "z0": 0,
+            "s": {
+                "begin": 0.01, 
+                "end":0.16, 
+                "qnt_points": 300
+            }
+        },
+        {
+            "type": "PW"
+        }
+    ],
+    "graph": {
+        "x_label": "Confinement factor s",
+        "y_label": "Asymmetry Factor $J_1(x)$",
+        "x_values": {
+            "begin": 0.01, 
+            "end":0.16, 
+            "qnt_points": 300
+        }
+    },
+    "time": false
+}

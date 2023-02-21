@@ -1,0 +1,43 @@
+{
+    "name": "BBPW2PVA",
+    "full_name": "Bessel Beam and Plane Wave with 2 Particles and Varying values of alpha",
+    "particle":[
+        {
+            "x" : 3,
+            "m" : "1.57-0.038j",
+            "ur": 1
+        },
+        {
+            "x" : 8,
+            "m" : "1.57-0.038j",
+            "ur": 1
+        }
+    ],
+    "beam": [
+        {
+            "type": "BB",
+            "var_lambda": "10.63*(10**(-6))",
+            "k" : "(2*math.pi) / var_lambda",
+            "z0": "0",
+            "angle": {
+                "begin": 0.01,
+                "end": 45,
+                "qnt_points": 300 
+            }
+        },
+        {
+            "type": "PW"
+        }
+    ],
+    "graph": {
+        "x_label": "Axicon angle (degrees)",
+        "y_label": "Asymmetry Factor $J_1(x)$",
+        "legend" : ["BBx=3", "BBx=8", "PWx=3", "PWx=8"],
+        "x_values": {
+            "begin": 0.01,
+            "end": 45,
+            "qnt_points": 300 
+        }
+    },
+    "time": false
+}

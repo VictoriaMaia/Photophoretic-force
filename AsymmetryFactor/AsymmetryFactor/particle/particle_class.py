@@ -9,3 +9,7 @@ class ParticleAttributes:
         print("x: ", self.x)
         print("m: ", self.m)
         print("Ur: ", self.ur)
+        print()
+
+    def particle_info(self):
+        return f'x:{self.x}|m:{self.m}'

@@ -5,7 +5,7 @@ import math
 
 def tau_m_n(m, n, x):
     """
-    TO DO: add description
+    TODO: add description
     
     Parameters
     ----------
@@ -31,7 +31,7 @@ def tau_m_n(m, n, x):
 
 def pi_m_n(m, n, angle):
     """
-    TO DO: add description
+    TODO: add description
     
     Parameters
     ----------
@@ -49,7 +49,7 @@ def pi_m_n(m, n, angle):
 
 def gn_bessel_beam(n, k, z0, angle):
     """
-    TO DO: add description
+    TODO: add description
     
     Parameters
     ----------

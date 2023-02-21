@@ -11,7 +11,13 @@ class FrozenWaveAttributes(BeamAttributes):
         self.n = n
         pass
 
-    def print_frozen_wave_attributes(self):
+    def print_beam_attributes(self):
         print("k: ", self.k)
         print("z0: ", self.z0)
-        print("angle: ", self.angle)
+        print("q: ", self.q)
+        print("l: ", self.l)
+        print("n: ", self.n)
+        print()
+
+    def beam_info(self):
+        return f'name:{self.name}'

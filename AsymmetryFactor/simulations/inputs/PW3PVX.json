@@ -1,0 +1,49 @@
+{
+    "name": "PW3PVX",
+    "full_name": "Plane Wave with 3 Particles and Varying values of x",
+    "particle":[
+        {
+            "x" : {
+                "begin": 0.01, 
+                "end":20, 
+                "qnt_points": 300
+            },
+            "m" : "1.57-0.038j",
+            "ur": 1
+        },
+        {
+            "x" : {
+                "begin": 0.01, 
+                "end":20, 
+                "qnt_points": 300
+            },
+            "m" : "1.57-0.19j",
+            "ur": 1
+        },
+        {
+            "x" : {
+                "begin": 0.01, 
+                "end":20, 
+                "qnt_points": 300
+            },
+            "m" : "1.57-0.95j",
+            "ur": 1
+        }
+    ],
+    "beam": [
+        {
+            "type": "PW"
+        }
+    ],
+    "graph": {
+        "x_label": "Size Parameter x",
+        "y_label": "Asymmetry Factor $J_1(x)$",
+        "legend" : ["M = 1.57 - i0.038", "M = 1.57 - i0.19", "M = 1.57 - i0.95"],
+        "x_values": {
+            "begin": 0.01, 
+            "end":20, 
+            "qnt_points": 300
+        }
+    },
+    "time": false
+}

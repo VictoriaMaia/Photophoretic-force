@@ -1,0 +1,52 @@
+{
+    "name": "GBPWVXS",
+    "full_name": "Gaussian Beam and Plane Wave Varying values of x and s",
+    "particle":[
+        {
+            "x" : {
+                "begin": 20, 
+                "end":100, 
+                "qnt_points": 300
+            },
+            "m" : "1.57-0.038j",
+            "ur": 1
+        }
+    ],
+    "beam": [
+        {
+            "type": "GB",
+            "var_lambda": "10.63*(10**(-6))",
+            "k" : "(2*math.pi) / var_lambda",
+            "z0": 0,
+            "s": 0.1
+        },
+        {
+            "type": "GB",
+            "var_lambda": "10.63*(10**(-6))",
+            "k" : "(2*math.pi) / var_lambda",
+            "z0": 0,
+            "s": 0.05
+        },
+        {
+            "type": "GB",
+            "var_lambda": "10.63*(10**(-6))",
+            "k" : "(2*math.pi) / var_lambda",
+            "z0": 0,
+            "s": 0.01
+        },
+        {
+            "type": "PW"
+        }
+    ],
+    "graph": {
+        "x_label": "Size parameter x",
+        "y_label": "Asymmetry Factor $J_1(x)$",
+        "legend" : ["PW", "GB s=0.1", "GB s=0.05", "GB s=0.01"],
+        "x_values": {
+            "begin": 20, 
+            "end":100, 
+            "qnt_points": 300
+        }
+    },
+    "time": false
+}

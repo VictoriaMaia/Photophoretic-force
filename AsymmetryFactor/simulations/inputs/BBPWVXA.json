@@ -1,0 +1,52 @@
+{
+    "name": "BBPWVXA",
+    "full_name": "Bessel Beam and Plane Wave Varying x and alpha values",
+    "particle":[
+        {
+            "x" : {
+                "begin": 20, 
+                "end":100, 
+                "qnt_points": 300
+            },
+            "m" : "1.57-0.038j",
+            "ur": 1
+        }
+    ],
+    "beam": [
+        {
+            "type": "BB",
+            "var_lambda": "10.63*(10**(-6))",
+            "k" : "(2*math.pi) / var_lambda",
+            "z0": "0",
+            "angle": 13.916
+        },
+        {
+            "type": "BB",
+            "var_lambda": "10.63*(10**(-6))",
+            "k" : "(2*math.pi) / var_lambda",
+            "z0": "0",
+            "angle": 6.907
+        },
+        {
+            "type": "BB",
+            "var_lambda": "10.63*(10**(-6))",
+            "k" : "(2*math.pi) / var_lambda",
+            "z0": "0",
+            "angle": 1.378
+        },
+        {
+            "type": "PW"
+        }
+    ],
+    "graph": {
+        "x_label": "Size Parameter x",
+        "y_label": "Asymmetry Factor $J_1(x)$",
+        "legend" : ["PW", "α =13.916°", "α =6.907°", "α =1.378°"],
+        "x_values": {
+            "begin": 20,
+            "end": 100,
+            "qnt_points": 300 
+        }
+    },
+    "time": false
+}

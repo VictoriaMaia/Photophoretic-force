@@ -1,0 +1,46 @@
+{
+    "name": "FWVXZ0100points",
+    "full_name": "Frozen Wave Varying x and z0 values with 100 points",
+    "particle": [
+        {
+            "x" : {
+                "begin": 0.01, 
+                "end":20, 
+                "qnt_points": 100
+            },
+            "m" : "1.57-0.038j",
+            "ur": 1
+        }
+    ],
+    "beam": [
+        {
+            "type": "FW",
+            "var_lambda": "1064*(10**(-9))",
+            "k" : "(2*math.pi) / var_lambda",
+            "z0": 0.0002,
+            "q" : "0.8*k",
+            "l" : 0.0004,
+            "n" : -75
+        },
+        {
+            "type": "FW",
+            "var_lambda": "1064*(10**(-9))",
+            "k" : "(2*math.pi) / var_lambda",
+            "z0": 0.0001,
+            "q" : "0.8*k",
+            "l" : 0.0004,
+            "n" : -75
+            }
+    ],
+    "graph": {
+        "x_label": "",
+        "y_label": "Asymmetry Factor $J_1(x)$",
+        "legend" : ["$z_0 = L/2$", "z_0 = L/4 * 250"],
+        "x_values": {
+            "begin": 0.1, 
+            "end":20, 
+            "qnt_points": 100
+        }
+    },
+    "time": false
+}

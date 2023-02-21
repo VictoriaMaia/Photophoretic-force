@@ -7,7 +7,7 @@ import math
 
 def pi_m_n(m, n, x):
     """
-    TO DO: add description
+    TODO: add description
     
     Parameters
     ----------
@@ -23,7 +23,7 @@ def pi_m_n(m, n, x):
 
 def tau_m_n(m, n, x):
     """
-    TO DO: add description
+    TODO: add description
     
     Parameters
     ----------
@@ -45,7 +45,7 @@ def tau_m_n(m, n, x):
 
 def Kz_q(q_i, L, q):
     """
-    TO DO: add description
+    TODO: add description
     
     Parameters
     ----------  
@@ -58,7 +58,7 @@ def Kz_q(q_i, L, q):
 
 def A_q(l, q):
     """
-    TO DO: add description
+    TODO: add description
     
     Parameters
     ----------  
@@ -87,7 +87,7 @@ def A_q(l, q):
 
 def gn_frozen_wave_beam(n, n_to_q, k, z0, l, q):
     """
-    TO DO: add description
+    TODO: add description
     
     Parameters
     ----------

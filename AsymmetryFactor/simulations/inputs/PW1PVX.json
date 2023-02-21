@@ -1,0 +1,31 @@
+{
+    "name": "PW1PVX",
+    "full_name": "Plane Wave with 1 Particle and Varying values of x",
+    "particle":[
+        {
+            "x" : {
+                "begin": 0.01, 
+                "end":20, 
+                "qnt_points": 300
+            },
+            "m" : "1.57-0.038j",
+            "ur": 1
+        }
+    ],
+    "beam": [
+        {
+        "type": "PW"
+        }
+    ],
+    "graph": {
+        "x_label": "Size Parameter x",
+        "y_label": "Asymmetry Factor $J_1(x)$",
+        "legend" : ["M = 1.57 - i0.038"],
+        "x_values": {
+            "begin": 0.01, 
+            "end":20, 
+            "qnt_points": 300
+        }
+    },
+    "time": false
+}

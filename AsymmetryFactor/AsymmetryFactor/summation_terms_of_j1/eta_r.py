@@ -1,7 +1,7 @@
 def eta_r(m, u_r):
     """
     Calculates the value of eta_r.
-    TO DO: what is eta_r?
+    TODO: what is eta_r?
     
     Parameters
     ----------

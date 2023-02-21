@@ -1,0 +1,45 @@
+{
+    "name": "GB3PVZ0S016",
+    "full_name": "Gaussian Beam with 3 Particles Varying values of z0 and s=0.16",
+    "particle":[
+        {
+            "x" : 0.1,
+            "m" : "1.57-0.038j",
+            "ur": 1
+        },
+        {
+            "x" : 3,
+            "m" : "1.57-0.038j",
+            "ur": 1
+        },
+        {
+            "x" : 8,
+            "m" : "1.57-0.038j",
+            "ur": 1
+        }
+    ],
+    "beam": [
+        {
+            "type": "GB",
+            "var_lambda": "10.63*(10**(-6))",
+            "k" : "(2*math.pi) / var_lambda",
+            "z0": {
+                "begin": -0.00006, 
+                "end":0.00006, 
+                "qnt_points": 300
+            },
+            "s": 0.16
+        }
+    ],
+    "graph": {
+        "x_label": "Relative position $z_0$ (µ_m)",
+        "y_label": "Asymmetry Factor $J_1(x)$",
+        "legend" : ["x=0.1*1000", "x=3", "x=8"],
+        "x_values": {
+            "begin": -60, 
+            "end":60, 
+            "qnt_points": 300
+        }
+    },
+    "time": false
+}

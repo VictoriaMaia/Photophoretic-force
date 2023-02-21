@@ -5,6 +5,7 @@ from .dn import term_d_n
 from .sn import term_s_n
 
 
+# TODO rn1 -> rn_1
 class SummationVariables:
     def __init__(self, cn, conj_cn, cn1, conj_cn1, rn, rn1, dn, conj_dn, dn1, sn):
         self.cn = cn
@@ -20,6 +21,7 @@ class SummationVariables:
         pass
 
 
+# TODO: verify is the particle_params is the particle class type
 def compute_variables(particle_params, i):
     cn = term_c_n(particle_params.ur, particle_params.m, particle_params.x, i)
     conj_cn = np.conj(cn)

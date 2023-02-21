@@ -9,7 +9,7 @@ class BesselAttributes(BeamAttributes):
         self.angle = angle
         pass
 
-    def print_bessel_attributes(self):
+    def print_beam_attributes(self):
         print("k: ", self.k)
         print("z0: ", self.z0)
         print("angle: ", self.angle)

@@ -125,6 +125,6 @@ def ricatti_bessel_s_k_derivative(n, x):
     n : order of the spherical Bessel functions inside spherical_hankel_s_k function
     x : input parameter or argument
     """
-    # TO DO verify which formula is correct
+    # TODO verify which formula is correct
     return (1+n) * spherical_hankel_s_k(n, x) - x * spherical_hankel_s_k((1+n), x)  # old
     # return x * spherical_hankel_s_k((n - 1), x) - (n - 1) * spherical_hankel_s_k(n,x) #new

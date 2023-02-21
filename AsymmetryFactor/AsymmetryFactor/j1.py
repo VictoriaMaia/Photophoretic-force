@@ -7,7 +7,7 @@ import numpy as np
 
 def summation(particle, beam):
     """
-    TO DO: add description
+    TODO: add description
     
     Parameters
     ----------
@@ -23,9 +23,9 @@ def summation(particle, beam):
         vars_i = compute_variables(particle, i)
 
         if isinstance(beam, GaussAttributes):
-            gn = gn_gaussian_beam(i, beam.k, beam.z0, beam.s)
+            gn = beam.gn_beam(i)
             conj_gn = np.conj(gn)
-            gn1 = gn_gaussian_beam((i+1), beam.k, beam.z0, beam.s)
+            gn1 = beam.gn_beam((i+1))
             conj_gn1 = np.conj(gn1)
         elif isinstance(beam, BesselAttributes):
             gn = gn_bessel_beam(i, beam.k, beam.z0, beam.angle)
@@ -67,7 +67,7 @@ def summation(particle, beam):
 
 def j1(particle, beam):    
     """
-    TO DO: add description
+    TODO: add description
     
     Parameters
     ----------
