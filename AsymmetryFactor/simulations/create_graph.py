@@ -15,8 +15,6 @@ def plot_graphic(results_to_plot,
                  ):
 
     plt.figure(figsize=[image_size_x, image_size_y])
-    plt.xlabel(x_label)
-    plt.ylabel(y_label)
 
     aux_color = 0
     aux_line = 0
@@ -33,7 +31,10 @@ def plot_graphic(results_to_plot,
         
     
     mpl.rcParams['font.size'] = font_size
-   
+    
+    plt.xlabel(x_label)
+    plt.ylabel(y_label)
+    plt.legend(loc='best')
     plt.grid()
     plt.show()
         
