@@ -17,6 +17,8 @@ import json
 import math
 import sys
 
+# python simulations/using_json_test.py simulations/inputs/GB*
+
 
 def create_particles(data_particles):
     # qnt_particles = len(data_particles)
@@ -70,16 +72,18 @@ def create_particles(data_particles):
     return list_of_particles, matrix
         
 
-
 def create_beams(data_beam):
     # print(data_beam)
-    # print(f'receive {len(data_beam)} beams')
+    print(f'receive {len(data_beam)} beams')
 
     matrix = False
     list_of_beams = []
+    beams = []
+
 
     for beam in data_beam:
         type_beam = beam["type"]
+        # print(type_beam)
 
         if type_beam == "PW":
             # print("Is Plane Wave")
@@ -124,8 +128,6 @@ def create_beams(data_beam):
 
                 qnt_z0 = z0["qnt_points"]
                 
-                beams = []
-
                 z0_values = np.linspace(begin, end, qnt_z0)
                 for i_z0 in z0_values:
                     beams.append(FrozenWaveAttributes(k, i_z0, q, l, n))
@@ -137,67 +139,135 @@ def create_beams(data_beam):
 
 
         elif type_beam == "GB":
-            ...
+            var_lambda = beam["var_lambda"]
+            var_lambda = eval(var_lambda)
+
+            k = beam["k"]
+            k = eval(k)
+
+            z0 = beam["z0"]
+            s = beam["s"]
+
+            if isinstance(z0, dict):
+                begin = z0["begin"]
+                
+                # TODO verify if still needed 
+                if isinstance(z0, str):
+                    begin = eval(begin)
+                
+                end = z0["end"]
+                if isinstance(end, str):
+                    end = eval(end)
+
+                qnt_z0 = z0["qnt_points"]
+                
+
+                z0_values = np.linspace(begin, end, qnt_z0)
+            
+                for i_z0 in z0_values:
+                    beams.append(GaussAttributes(k, i_z0, s))
+
+                list_of_beams.append(beams)
+
+            elif isinstance(s, dict):
+                begin = s["begin"]
+                if isinstance(s, str):
+                    begin = eval(begin)
+                
+                end = s["end"]
+                if isinstance(end, str):
+                    end = eval(end)
+
+                qnt_s = s["qnt_points"]
+                
+                
+
+                s_values = np.linspace(begin, end, qnt_s)
+            
+                for i_s in s_values:
+                    beams.append(GaussAttributes(k, z0, i_s))
+
+                list_of_beams.append(beams)
+
+            else:
+                list_of_beams.append(GaussAttributes(k, z0, s))
+
 
         elif type_beam == "BB":
             ...
 
-        if any(type(i) is list for i in list_of_beams):
-            # print("is a list of list")
-            # for i in list_of_beams:
-            #     for j in i:
-            #         j.print_beam_attributes()
-            matrix = True
+    
+    if any(type(i) is list for i in list_of_beams):
+        # print("is a list of list")
+        # for i in list_of_beams:
+        #     for j in i:
+        #         j.print_beam_attributes()
+        matrix = True
 
-        # else:
-        #     # print("is just a list")
-        #     for i in list_of_beams:
-        #         i.print_beam_attributes()
+    # else:
+    #     # print("is just a list")
+    #     for i in list_of_beams:
+    #         i.print_beam_attributes()
 
-        return list_of_beams, matrix
+    return list_of_beams, matrix
 
 
-def matrix_beam_matrix_particle(beams, particle, writer_csv):
+def matrix_beam_matrix_particle(beams, particle):
     print("matrix_beam_matrix_particle")
 
+# def matrix_beam_list_particle(beams, particle, graph, time, writer_csv_graph=None, writer_csv_time=None): 
 def matrix_beam_list_particle(beams, particle, writer_csv): 
     print("matrix_beam_list_particle")
 
     for i_p in particle:    
         row = []
         # result_i_p = []
-        print("**********************************")
-        i_p.print_particle_attributes()
+        # print("**********************************")
+        # i_p.print_particle_attributes()
         row.append(i_p.particle_info())
         row.append(beams[0].beam_info())
         
         for j_b in beams:
-            j_b.print_beam_attributes()
+            # j_b.print_beam_attributes()
             row.append(j1(i_p, j_b)) # pass operation graph or time
         
-        print(row)
+        # print(row)
         writer_csv.writerow(row)
 
 def list_beam_matrix_particle(beams, particle, writer_csv):
-    print("list_beam_matrix_particle")
+    # print("list_beam_matrix_particle")
 
     for i_b in beams:    
         row = []
-        i_b.print_beam_attributes()
-        print("**********************************")
+        # i_b.print_beam_attributes()
+        # print("**********************************")
         row.append(i_b.beam_info())
         row.append(particle[0].particle_info())
         
         for j_p in particle:
-            j_p.print_particle_attributes()
+            # j_p.print_particle_attributes()
 
             row.append(j1(j_p, i_b)) 
         
-        print(row)
+        # print(row)
         writer_csv.writerow(row)
 
-def list_beam_list_particle(beams, particle):
+
+def list_beam_list_particle(beams, particle, writer_csv):
     print("list_beam_list_particle")
+
+    for i_b in beams:
+        row = []
+        row.append(i_b.beam_info())
+        row.append(particle[0].particle_info())
+
+        for j_p in particle:
+            # j_p.print_particle_attributes()
+            row.append(j1(j_p, i_b)) 
+        
+        # print(row)
+        writer_csv.writerow(row)
+
 
 
 if __name__ == "__main__":
@@ -213,34 +283,34 @@ if __name__ == "__main__":
             
             print(data["name"])
 
-            # if data["graph"] != None:
-            #     graph_file_name = "./simulations/outputs/graph_result/"+data["name"] + ".csv"
-            #     graph_file = open(graph_file_name, 'w', newline='')
-            #     writer_csv_file = csv.writer(graph_file)
+            if data["graph"] != None:
+                graph_file_name = "./simulations/outputs/graph_result/"+data["name"] + ".csv"
+                graph_file = open(graph_file_name, 'w', newline='')
+                writer_csv_file = csv.writer(graph_file)
+                print("have a graph file, open")
 
             particles, m_particles = create_particles(data["particle"])
             beams, m_beams = create_beams(data["beam"])
 
-            if m_beams and m_particles:
+            if m_beams == True and m_particles == True:
                 matrix_beam_matrix_particle(beams, particles)
             
             elif m_beams == True and m_particles == False:
                 print("matrix_beam_list_particle")
-                # for i_b in beams:
-                #     matrix_beam_list_particle(i_b, particles, writer_csv_file)
-
-                # graph_file.close()
+                for i_b in beams:
+                    matrix_beam_list_particle(i_b, particles, writer_csv_file)
 
             elif m_beams == False and m_particles == True:
                 print("list_beam_matrix_particle")
-                # for i_p in particles:
-                #     list_beam_matrix_particle(beams, i_p, writer_csv_file)
-                
-                # graph_file.close()
-            
-            elif (not m_beams) and (not m_particles):
-                list_beam_list_particle(beams, particles)
+                for i_p in particles:
+                    list_beam_matrix_particle(beams, i_p, writer_csv_file)
+                            
+            elif m_beams == False and m_particles == False:                
+                list_beam_list_particle(beams, particles, writer_csv_file)
 
+            if data["graph"] != None:
+                graph_file.close()
+                print("close the graph file")
 
 
             

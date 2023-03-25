@@ -12,7 +12,7 @@ import numpy as np
 
 
 orange = '#ff6800'
-calculate_average = True
+calculate_average = False
 max_executions = 10
 qnt_points = 300
 
