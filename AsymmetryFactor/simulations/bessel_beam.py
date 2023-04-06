@@ -18,9 +18,9 @@ micro = 10**(-6)
 nano = 10**(-9)
 orange = '#ff6800'
 
-calculate_average = False
+calculate_average = True
 max_executions = 10
-qnt_points = 100
+qnt_points = 300
 
 def j1_bessel_beam_with_three_particles():
     var_lambda = 10.63 * micro
@@ -37,9 +37,14 @@ def j1_bessel_beam_with_three_particles():
     m_019 = 1.57 - 0.19j
     m_095 = 1.57 - 0.95j
 
+    pw = BeamAttributes()
+
     results_038 = []
     results_019 = []
     results_095 = []
+    results_038_pw = []
+    results_019_pw = []
+    results_095_pw = []
 
     if calculate_average:
         total_time = 0
@@ -50,8 +55,13 @@ def j1_bessel_beam_with_three_particles():
             
             for i in x:
                 results_038.append(j1(ParticleAttributes(i, m_038, ur), bessel_b))
+                results_038_pw.append(j1(ParticleAttributes(i, m_038, ur), pw))
+
                 results_019.append(j1(ParticleAttributes(i, m_019, ur), bessel_b))
+                results_019_pw.append(j1(ParticleAttributes(i, m_019, ur), pw))
+
                 results_095.append(j1(ParticleAttributes(i, m_095, ur), bessel_b))
+                results_095_pw.append(j1(ParticleAttributes(i, m_095, ur), pw))
             
             total_time += timer()-start
             pbar.update()
@@ -59,7 +69,7 @@ def j1_bessel_beam_with_three_particles():
         pbar.refresh()
         pbar.close()  
         average = total_time/max_executions      
-        print(average)  
+        print(f'{average:.3f}')  
     
         print("Total time: ", end="")
         convert_time_to_more_readable(average)
@@ -128,7 +138,7 @@ def j1_bessel_beam_with_different_alpha_values():
         pbar.refresh()
         pbar.close()  
         average = total_time/max_executions      
-        print(average)  
+        print(f'{average:.3f}')  
     
         print("Total time: ", end="")
         convert_time_to_more_readable(average)
@@ -174,6 +184,8 @@ def j1_bessel_beam_with_different_x_values():
 
     results_x_3 = []
     results_x_8 = []
+    results_x_3_pw = []
+    results_x_8_pw = []
 
     if calculate_average:
         total_time = 0
@@ -184,7 +196,10 @@ def j1_bessel_beam_with_different_x_values():
             
             for i in alpha:
                 results_x_3.append(j1(particle_x_3, BesselAttributes(k, z0, i)))
-                results_x_8.append(j1(particle_x_8, BesselAttributes(k, z0, i)))                
+                results_x_3_pw.append(j1(particle_x_3, plane_wave))
+
+                results_x_8.append(j1(particle_x_8, BesselAttributes(k, z0, i)))     
+                results_x_8_pw.append(j1(particle_x_8, plane_wave))           
             
             total_time += timer()-start
             pbar.update()
@@ -192,7 +207,7 @@ def j1_bessel_beam_with_different_x_values():
         pbar.refresh()
         pbar.close()  
         average = total_time/max_executions      
-        print(average)  
+        print(f'{average:.3f}')  
     
         print("Total time: ", end="")
         convert_time_to_more_readable(average)

@@ -1,4 +1,6 @@
 from mpmath import exp
+from itertools import repeat
+import multiprocessing
 import scipy.special 
 import scipy.integrate
 import numpy as np
@@ -114,3 +116,72 @@ def gn_frozen_wave_beam(n, n_to_q, k, z0, l, q):
         result_sum += result
                 
     return (-2)/(n*(n+1)) * result_sum
+
+
+class Infos():
+    def __init__(self, n, k, z0, l, q) -> None:
+        self.n = n
+        self.k = k
+        self.z0 = z0
+        self.l = l
+        self.q = q
+        # self.q_i = q_i
+        pass
+
+
+def gn_calculate(infos, q_i):
+
+    # [n, k, z0, l, q]
+    l = infos.l
+    q = infos.q
+    k = infos.k
+    n = infos.n
+    z0 = infos.z0
+    # q_i = infos.q_i
+
+    kz_q = Kz_q(q_i, l, q)
+    div_kz_q_k = kz_q / k
+
+    frist_term_sum = A_q(l,q_i) / (1 + div_kz_q_k)
+    second_term_sum = pi_m_n(1, n, div_kz_q_k) + tau_m_n(1, n, div_kz_q_k)
+    third_term_sum = exp(1j*kz_q*z0)
+    
+    result = frist_term_sum * second_term_sum * third_term_sum
+
+    return result
+                
+    
+
+def gn_frozen_wave_beam_with_parallel(n, n_to_q, k, z0, l, q):
+    """
+    TODO: add description
+    
+    Parameters
+    ----------
+    n      :
+    n_to_q :
+    k      :
+    z0     :
+    l      :  
+    q      :
+    """
+    infos = Infos(n, k, z0, l, q)    
+    q_values = [(q_i) for q_i in range(n_to_q, (-n_to_q + 1))]
+
+    result_sum = 0
+
+    pool_size = multiprocessing.cpu_count()        
+    if pool_size > 1:
+        pool_size = int(pool_size/2)
+
+    pool = multiprocessing.Pool(processes=pool_size)
+
+    results = pool.starmap(gn_calculate, zip(repeat(infos), q_values))
+
+    for i in results:
+        result_sum += i
+
+    return (-2)/(n*(n+1)) * result_sum
+        
+
+

@@ -1,0 +1,47 @@
+{
+    "name": "FW3PVZ0",
+    "full_name": "Frozen Wave with 3 Particles and Varying values of Z0",
+    "particle": [
+        {
+            "x" : 0.1,
+            "m" : "1.57-0.038j",
+            "ur": 1
+        },
+        {
+            "x" : 3,
+            "m" : "1.57-0.038j",
+            "ur": 1
+        },
+        {
+            "x" : 8,
+            "m" : "1.57-0.038j",
+            "ur": 1
+        }
+    ],
+    "beam": [
+        {
+        "type": "FW",
+        "var_lambda": "1064*(10**(-9))",
+        "k" : "(2*math.pi) / var_lambda",
+        "z0": {
+            "begin": 0.0002, 
+            "end":0.0004, 
+            "qnt_points": 100
+        },
+        "q" : "0.8*k",
+        "l" : 0.0004,
+        "n" : -75
+        }
+    ],
+    "graph": {
+        "x_label": "z_0 (um)",
+        "y_label": "Asymmetry Factor $J_1(x)$",
+        "legend" : ["x = 0.1", "x = 3", "x = 8"],
+        "x_values": {
+            "begin": 0.0002, 
+            "end":400, 
+            "qnt_points": 100
+        }
+    },
+    "time": false
+}

@@ -24,9 +24,6 @@
                 "end":0.16, 
                 "qnt_points": 300
             }
-        },
-        {
-            "type": "PW"
         }
     ],
     "graph": {

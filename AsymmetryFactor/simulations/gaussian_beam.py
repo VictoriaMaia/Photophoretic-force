@@ -18,7 +18,7 @@ micro = 10**(-6)
 nano = 10**(-9)
 orange = '#ff6800'
 
-calculate_average = False
+calculate_average = True
 max_executions = 10
 qnt_points = 300
 
@@ -39,9 +39,14 @@ def j1_gaussian_beam_with_three_particles():
     m_019 = 1.57 - 0.19j
     m_095 = 1.57 - 0.95j
 
+    pw = BeamAttributes()
+
     results_038 = []
     results_019 = []
     results_095 = []
+    results_038_pw = []
+    results_019_pw = []
+    results_095_pw = []
 
     if calculate_average:
         total_time = 0
@@ -52,8 +57,13 @@ def j1_gaussian_beam_with_three_particles():
             
             for i in x:
                 results_038.append(j1(ParticleAttributes(i, m_038, ur), gauss_b))
+                results_038_pw.append(j1(ParticleAttributes(i, m_038, ur), pw))
+
                 results_019.append(j1(ParticleAttributes(i, m_019, ur), gauss_b))
+                results_019_pw.append(j1(ParticleAttributes(i, m_019, ur), pw))
+                
                 results_095.append(j1(ParticleAttributes(i, m_095, ur), gauss_b))
+                results_095_pw.append(j1(ParticleAttributes(i, m_095, ur), pw))
             
             total_time += timer()-start
             pbar.update()
@@ -61,7 +71,7 @@ def j1_gaussian_beam_with_three_particles():
         pbar.refresh()
         pbar.close()  
         average = total_time/max_executions      
-        print(average)  
+        print(f'{average:.3f}')  
     
         print("Total time: ", end="")
         convert_time_to_more_readable(average)
@@ -95,24 +105,50 @@ def j1_gaussian_beam_with_varing_s_values():
     particle_x3 = ParticleAttributes(x3, m_038, ur)
     particle_x8 = ParticleAttributes(x8, m_038, ur)
 
+    pw = BeamAttributes()
+
     results_x3 = []
     results_x8 = []
+    results_x3_pw = []
+    results_x8_pw = []
 
-    # start = timer()
-    for i in s:
-        results_x3.append(j1(particle_x3, GaussAttributes(k, z0, i)))
-        results_x8.append(j1(particle_x8, GaussAttributes(k, z0, i)))
-    # time = timer()-start
-
-    # print("time: ", time)
-
-    results = [results_x3, results_x8]
-    x_label = "Confinement factor s"
-    y_label = "Asymmetry Factor $J_1(x)$"
-    legend = ["x=3", "x=8"]
-
-    plot_graphic(results, s, x_label, y_label, legend)
+    if calculate_average:
+        total_time = 0
+        
+        pbar = tqdm(colour=orange, total=max_executions, desc="Calculating points", leave=False)
+        for i in range(max_executions):            
+            start = timer()
+            
+            for i in s:
+                results_x3.append(j1(particle_x3, GaussAttributes(k, z0, i)))
+                results_x3_pw.append(j1(particle_x3, pw))
+                
+                results_x8.append(j1(particle_x8, GaussAttributes(k, z0, i)))
+                results_x8_pw.append(j1(particle_x3, pw))
+            
+            total_time += timer()-start
+            pbar.update()
     
+        pbar.refresh()
+        pbar.close()  
+        average = total_time/max_executions      
+        print(f'{average:.3f}')  
+    
+        print("Total time: ", end="")
+        convert_time_to_more_readable(average)
+
+    else:
+        for i in s:
+            results_x3.append(j1(particle_x3, GaussAttributes(k, z0, i)))
+            results_x8.append(j1(particle_x8, GaussAttributes(k, z0, i)))
+
+        results = [results_x3, results_x8]
+        x_label = "Confinement factor s"
+        y_label = "Asymmetry Factor $J_1(x)$"
+        legend = ["x=3", "x=8"]
+
+        plot_graphic(results, s, x_label, y_label, legend)
+        
 
 def j1_gaussian_beam_with_varing_z0_values_s_001():
     var_lambda = 10.63 * micro
@@ -136,23 +172,44 @@ def j1_gaussian_beam_with_varing_z0_values_s_001():
     results_x3 = []
     results_x8 = []
 
-    # start = timer()
-    for i in z0:
-        results_x01.append(j1(particle_x01, GaussAttributes(k, i, s))*10000)
-        results_x3.append(j1(particle_x3, GaussAttributes(k, i, s)))
-        results_x8.append(j1(particle_x8, GaussAttributes(k, i, s)))
-    # time = timer()-start
+    if calculate_average:
+        total_time = 0
+        
+        pbar = tqdm(colour=orange, total=max_executions, desc="Calculating points", leave=False)
+        for i in range(max_executions):            
+            start = timer()
+            
+            for i in z0:
+                results_x01.append(j1(particle_x01, GaussAttributes(k, i, s))*10000)
+                results_x3.append(j1(particle_x3, GaussAttributes(k, i, s)))
+                results_x8.append(j1(particle_x8, GaussAttributes(k, i, s)))
 
-    # print("time: ", time)
-
-    z0 = np.linspace(-15, 15, qnt_points)
+            total_time += timer()-start
+            pbar.update()
     
-    results = [results_x01, results_x3, results_x8]
-    x_label = "Relative position $z_0$ (mm)"
-    y_label = "Asymmetry Factor $J_1(x)$"
-    legend = ["x = 0.1*10000", "x = 3", "x = 8"]
+        pbar.refresh()
+        pbar.close()  
+        average = total_time/max_executions      
+        print(f'{average:.3f}')  
+    
+        print("Total time: ", end="")
+        convert_time_to_more_readable(average)
 
-    plot_graphic(results, z0, x_label, y_label, legend)
+    else:
+
+        for i in z0:
+            results_x01.append(j1(particle_x01, GaussAttributes(k, i, s))*10000)
+            results_x3.append(j1(particle_x3, GaussAttributes(k, i, s)))
+            results_x8.append(j1(particle_x8, GaussAttributes(k, i, s)))
+
+        z0 = np.linspace(-15, 15, qnt_points)
+        
+        results = [results_x01, results_x3, results_x8]
+        x_label = "Relative position $z_0$ (mm)"
+        y_label = "Asymmetry Factor $J_1(x)$"
+        legend = ["x = 0.1*10000", "x = 3", "x = 8"]
+
+        plot_graphic(results, z0, x_label, y_label, legend)
     
 
 def j1_gaussian_beam_with_varing_z0_values_s_010():
@@ -177,23 +234,45 @@ def j1_gaussian_beam_with_varing_z0_values_s_010():
     results_x3 = []
     results_x8 = []
 
-    # start = timer()
-    for i in z0:
-        results_x01.append(j1(particle_x01, GaussAttributes(k, i, s))*5000)
-        results_x3.append(j1(particle_x3, GaussAttributes(k, i, s)))
-        results_x8.append(j1(particle_x8, GaussAttributes(k, i, s)))
-    # time = timer()-start
+    if calculate_average:
+        total_time = 0
+        
+        pbar = tqdm(colour=orange, total=max_executions, desc="Calculating points", leave=False)
+        for i in range(max_executions):            
+            start = timer()
+            
+            for i in z0:
+                results_x01.append(j1(particle_x01, GaussAttributes(k, i, s))*5000)
+                results_x3.append(j1(particle_x3, GaussAttributes(k, i, s)))
+                results_x8.append(j1(particle_x8, GaussAttributes(k, i, s)))
 
-    # print("time: ", time)
-
-    z0 = np.linspace(-150, 150, qnt_points)
+            total_time += timer()-start
+            pbar.update()
     
-    results = [results_x01, results_x3, results_x8]
-    x_label = "Relative position $z_0$ ($\mu_m$)"
-    y_label = "Asymmetry Factor $J_1(x)$"
-    legend = ["x = 0.1*5000", "x = 3", "x = 8"]
+        pbar.refresh()
+        pbar.close()  
+        average = total_time/max_executions      
+        print(f'{average:.3f}')  
+    
+        print("Total time: ", end="")
+        convert_time_to_more_readable(average)
 
-    plot_graphic(results, z0, x_label, y_label, legend)
+    else:
+
+        for i in z0:
+            results_x01.append(j1(particle_x01, GaussAttributes(k, i, s))*5000)
+            results_x3.append(j1(particle_x3, GaussAttributes(k, i, s)))
+            results_x8.append(j1(particle_x8, GaussAttributes(k, i, s)))
+
+
+        z0 = np.linspace(-150, 150, qnt_points)
+        
+        results = [results_x01, results_x3, results_x8]
+        x_label = "Relative position $z_0$ ($\mu_m$)"
+        y_label = "Asymmetry Factor $J_1(x)$"
+        legend = ["x = 0.1*5000", "x = 3", "x = 8"]
+
+        plot_graphic(results, z0, x_label, y_label, legend)
    
 
 def j1_gaussian_beam_with_varing_z0_values_s_016():
@@ -218,23 +297,45 @@ def j1_gaussian_beam_with_varing_z0_values_s_016():
     results_x3 = []
     results_x8 = []
 
-    # start = timer()
-    for i in z0:
-        results_x01.append(j1(particle_x01, GaussAttributes(k, i, s))*1000)
-        results_x3.append(j1(particle_x3, GaussAttributes(k, i, s)))
-        results_x8.append(j1(particle_x8, GaussAttributes(k, i, s)))
-    # time = timer()-start
+    if calculate_average:
+        total_time = 0
+        
+        pbar = tqdm(colour=orange, total=max_executions, desc="Calculating points", leave=False)
+        for i in range(max_executions):            
+            start = timer()
+            
+            for i in z0:
+                results_x01.append(j1(particle_x01, GaussAttributes(k, i, s))*1000)
+                results_x3.append(j1(particle_x3, GaussAttributes(k, i, s)))
+                results_x8.append(j1(particle_x8, GaussAttributes(k, i, s)))
 
-    # print("time: ", time)
-
-    z0 = np.linspace(-60, 60, qnt_points)
+            total_time += timer()-start
+            pbar.update()
     
-    results = [results_x01, results_x3, results_x8]
-    x_label = "Relative position $z_0$ ($\mu_m$)"
-    y_label = "Asymmetry Factor $J_1(x)$"
-    legend = ["x = 0.1*1000", "x = 3", "x = 8"]
+        pbar.refresh()
+        pbar.close()  
+        average = total_time/max_executions      
+        print(f'{average:.3f}')  
+    
+        print("Total time: ", end="")
+        convert_time_to_more_readable(average)
 
-    plot_graphic(results, z0, x_label, y_label, legend)
+    else:
+
+        for i in z0:
+            results_x01.append(j1(particle_x01, GaussAttributes(k, i, s))*1000)
+            results_x3.append(j1(particle_x3, GaussAttributes(k, i, s)))
+            results_x8.append(j1(particle_x8, GaussAttributes(k, i, s)))
+
+
+        z0 = np.linspace(-60, 60, qnt_points)
+        
+        results = [results_x01, results_x3, results_x8]
+        x_label = "Relative position $z_0$ ($\mu_m$)"
+        y_label = "Asymmetry Factor $J_1(x)$"
+        legend = ["x = 0.1*1000", "x = 3", "x = 8"]
+
+        plot_graphic(results, z0, x_label, y_label, legend)
    
 
 def j1_gaussian_beam_with_varing_x_values():
@@ -261,44 +362,67 @@ def j1_gaussian_beam_with_varing_x_values():
     results_s001 = []
     results_pw = []
 
-    # start = timer()
-    for i in x:
-        results_s01.append(j1(ParticleAttributes(i, m_038, ur), gauss_b_s01))
-        results_s005.append(j1(ParticleAttributes(i, m_038, ur), gauss_b_s005))
-        results_s001.append(j1(ParticleAttributes(i, m_038, ur), gauss_b_s001))
-        results_pw.append(j1(ParticleAttributes(i, m_038, ur), pw))
-    # time = timer()-start
+    if calculate_average:
+        total_time = 0
+        
+        pbar = tqdm(colour=orange, total=max_executions, desc="Calculating points", leave=False)
+        for i in range(max_executions):            
+            start = timer()
+            
+            for i in x:
+                results_s01.append(j1(ParticleAttributes(i, m_038, ur), gauss_b_s01))
+                results_s005.append(j1(ParticleAttributes(i, m_038, ur), gauss_b_s005))
+                results_s001.append(j1(ParticleAttributes(i, m_038, ur), gauss_b_s001))
+                results_pw.append(j1(ParticleAttributes(i, m_038, ur), pw))
 
-    # print("time: ", time)
+            total_time += timer()-start
+            pbar.update()
     
-    results = [results_s01, results_s005, results_s001, results_pw]
-    x_label = "Size parameter x"
-    y_label = "Asymmetry Factor $J_1(x)$"
-    legend = ["s = 0.1", "s = 0.05", "s = 0.01", "plane wave"]
+        pbar.refresh()
+        pbar.close()  
+        average = total_time/max_executions      
+        print(f'{average:.3f}')  
+    
+        print("Total time: ", end="")
+        convert_time_to_more_readable(average)
 
-    plot_graphic(results, x, x_label, y_label, legend)
+    else:
+
+        for i in x:
+            results_s01.append(j1(ParticleAttributes(i, m_038, ur), gauss_b_s01))
+            results_s005.append(j1(ParticleAttributes(i, m_038, ur), gauss_b_s005))
+            results_s001.append(j1(ParticleAttributes(i, m_038, ur), gauss_b_s001))
+            results_pw.append(j1(ParticleAttributes(i, m_038, ur), pw))
+
+        
+        results = [results_s01, results_s005, results_s001, results_pw]
+        x_label = "Size parameter x"
+        y_label = "Asymmetry Factor $J_1(x)$"
+        legend = ["s = 0.1", "s = 0.05", "s = 0.01", "plane wave"]
+
+        plot_graphic(results, x, x_label, y_label, legend)
    
 
 
-def all_j1_gaussian_beam_simulations(return_time_bool):
+def all_j1_gaussian_beam_simulations():
     
     print("--------- Simulation 1: Gauss to 3 particles ----------")
-    j1_gaussian_beam_with_three_particles(return_time_bool)
+    j1_gaussian_beam_with_three_particles()
     
     print("--------- Simulation 2: Gauss varying s value to x = [3,8] and m = 1.57 - 0.038j ----------")
-    j1_gaussian_beam_with_varing_s_values(return_time_bool)
+    j1_gaussian_beam_with_varing_s_values()
 
     print("--------- Simulation 3: Gauss varying z0 values to different x values with s=0.01 ----------")
-    j1_gaussian_beam_with_varing_z0_values_s_001(return_time_bool)
+    j1_gaussian_beam_with_varing_z0_values_s_001()
 
     print("--------- Simulation 3: Gauss varying z0 values to different x values with s=0.10 ----------")
-    j1_gaussian_beam_with_varing_z0_values_s_010(return_time_bool)
+    j1_gaussian_beam_with_varing_z0_values_s_010()
 
     print("--------- Simulation 3: Gauss varying z0 values to different x values with s=0.16 ----------")
-    j1_gaussian_beam_with_varing_z0_values_s_016(return_time_bool)
+    j1_gaussian_beam_with_varing_z0_values_s_016()
 
     print("--------- Simulation 4: Gauss x PW varying x value to s = [0.1, 0.05, 0.01] ----------")
-    j1_gaussian_beam_with_varing_x_values(return_time_bool)
+    j1_gaussian_beam_with_varing_x_values()
 
 
 if __name__ == '__main__':

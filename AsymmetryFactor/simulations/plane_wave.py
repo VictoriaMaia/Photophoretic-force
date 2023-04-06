@@ -12,7 +12,7 @@ import numpy as np
 
 
 orange = '#ff6800'
-calculate_average = False
+calculate_average = True
 max_executions = 10
 qnt_points = 300
 
@@ -40,7 +40,7 @@ def j1_plane_wave_with_one_particle():
         pbar.refresh()
         pbar.close()  
         average = total_time/max_executions      
-        print(average)  
+        print(f'{average:.3f}')  
     
         print("Total time: ", end="")
         convert_time_to_more_readable(average)
@@ -88,7 +88,7 @@ def j1_plane_wave_with_three_particles():
         pbar.close()
         
         average = total_time/max_executions      
-        print(average)  
+        print(f'{average:.3f}')  
     
         print("Total time: ", end="")
         convert_time_to_more_readable(average)
