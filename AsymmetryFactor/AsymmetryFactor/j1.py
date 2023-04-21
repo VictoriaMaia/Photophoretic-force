@@ -391,7 +391,7 @@ def j1_with_time_gn_parallel(particle, beam):
 
         results = summation_with_compute_time_gn_parallel(particle, beam)
        
-        dic_time = {'ponto':particle.x, 'n_max':0, 'gn': 0, 'gn1': 0, 'ot': 0, 'op':0, 'j1':0}
+        dic_time = {'execucao':0, 'ponto':particle.x, 'z':"", 'n_max':0, 'gn': 0, 'gn1': 0, 'ot': 0, 'op':0, 'j1':0}
 
         summation_result = 0
 
@@ -432,9 +432,9 @@ def j1_with_time_parallel(particle, beam):
 
         first_term = (3 * epsilon2l) / ((abs(particle.m) ** 2) * (particle.x ** 3))
 
-        pool_size = multiprocessing.cpu_count()        
-        if pool_size > 1:
-            pool_size = int(pool_size/2)
+        pool_size = multiprocessing.cpu_count()      
+        # if pool_size > 1:
+        #     pool_size = int(pool_size/2)
         
         pool = multiprocessing.Pool(processes=pool_size)
 
@@ -443,7 +443,7 @@ def j1_with_time_parallel(particle, beam):
 
         results = pool.starmap(summation_with_compute_time_with_parallel, zip(repeat(particle), repeat(beam), n_values))
 
-        dic_time = {'ponto':particle.x, 'n_max':n_max, 'gn': 0, 'gn1': 0, 'ot': 0, 'op':0, 'j1':0}
+        dic_time = {'execucao':0, 'ponto':particle.x, 'z':"", 'n_max':n_max, 'gn': 0, 'gn1': 0, 'ot': 0, 'op':0, 'j1':0}
 
         summation_result = 0
 

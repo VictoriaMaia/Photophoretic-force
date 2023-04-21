@@ -12,13 +12,17 @@ import csv
 import numpy as np
 import math
 
+from itertools import repeat
+import multiprocessing
+import functools
+
 mili = 10**(-3)
 micro = 10**(-6) 
 nano = 10**(-9)
 orange = '#ff6800'
 
 calculate_average = True
-max_executions = 5
+max_executions = 10
 qnt_points = 100
 
 # dic_time = {'ponto':0, 'gn': 0, 'gn1': 0, 'ot': 0, 'op':0, 'j1':0}
@@ -100,6 +104,23 @@ def j1_frozen_wave_beam_with_three_size_parameters():
         
 
 def j1_frozen_wave_with_varing_z0_values():
+    path = "./simulations/outputs/time_result/"
+    title = "j1_frozen_wave_"
+    simulation2 = "with_z0_l2_l4_and_10_times_100_values_after_gn_parallel_4_processes"
+    
+    time_file_name2 = path + title + simulation2 + ".csv"
+    print(time_file_name2)
+
+    time_file2 = open(time_file_name2, 'w', newline='')
+    writer_csv_file = csv.DictWriter(
+        time_file2, 
+        fieldnames= ["execucao", "tempo"])
+    
+    writer_csv_file. writeheader()
+
+    dic_time = {'execucao':0, 'tempo':0}
+
+
     var_lambda = 1064 * nano
         
     k = (2*math.pi) / var_lambda
@@ -118,27 +139,33 @@ def j1_frozen_wave_with_varing_z0_values():
     results_l4 = []
 
     if calculate_average:
-        print("gn_parallel")
         total_time = 0
         
         pbar = tqdm(colour=orange, total=max_executions, desc="Calculating points graph 2", leave=False)
         for i in range(max_executions):            
             start = timer()
             
-            for i in x:
-                results_l2.append(j1_with_time_gn_parallel(ParticleAttributes(i, m_038, ur), fw_l2))
-                results_l4.append(j1_with_time_gn_parallel(ParticleAttributes(i, m_038, ur), fw_l4))
+            for i_x in x:
+                results_l2.append(j1_with_time_gn_parallel(ParticleAttributes(i_x, m_038, ur), fw_l2))
+                results_l4.append(j1_with_time_gn_parallel(ParticleAttributes(i_x, m_038, ur), fw_l4))
             
-            total_time += timer()-start
+            total_time = timer()-start
+            
+            dic_time["execucao"] = i+1
+            dic_time["tempo"] = total_time
+            
+            
+            writer_csv_file.writerow(dic_time)
+            # total_time += timer()-start
             pbar.update()
     
         pbar.refresh()
         pbar.close()  
-        average = total_time/max_executions      
-        print(f'{average:.3f}')  
+        # average = total_time/max_executions      
+        # print(f'{average:.3f}')  
     
-        print("Total time: ", end="")
-        convert_time_to_more_readable(average)
+        # print("Total time: ", end="")
+        # convert_time_to_more_readable(average)
 
     else:
         total_time = 0
@@ -170,6 +197,68 @@ def j1_frozen_wave_with_varing_z0_values():
         plot_graphic(results, x, x_label, y_label, legend)
 
 
+def j1_frozen_wave_with_varing_z0_values_with_time_calculate():
+    path = "./simulations/outputs/time_result/"
+    title = "j1_frozen_wave_"
+    simulation = "with_z0_l2_l4_and_1_times_3_values_n_max_after_j1_parallel_4_processes"
+    
+    time_file_name = path + title + simulation + ".csv"
+    print(time_file_name)
+
+    time_file = open(time_file_name, 'w', newline='')
+    writer_csv_file = csv.DictWriter(
+        time_file, 
+        fieldnames= ["execucao", "ponto", "z", "n_max", "j1", "gn", "gn1", "ot", "op"])
+    
+    writer_csv_file. writeheader()
+
+    # COLOQUEI AQUI O 3
+    qnt_points = 3
+
+    var_lambda = 1064 * nano
+        
+    k = (2*math.pi) / var_lambda
+    n = -75
+    q = 0.8*k
+    l = 400*micro   
+
+    fw_l2 = FrozenWaveAttributes(k, l/2, q, l, n)
+    fw_l4 = FrozenWaveAttributes(k, l/4, q, l, n)
+
+    ur = 1
+    m_038 = 1.57 - 0.038j
+    x = np.linspace(0.1, 20, qnt_points)
+
+    # results_l2 = []
+    # results_l4 = []
+
+    pbar = tqdm(colour=orange, total=max_executions, desc="Calculating")        
+    for e in range(max_executions):
+
+        for i in x:
+            # _, dic_receive_l2 = j1_with_time_gn_parallel(ParticleAttributes(i, m_038, ur), fw_l2)
+            # _, dic_receive_l4 = j1_with_time_gn_parallel(ParticleAttributes(i, m_038, ur), fw_l4)
+
+            _, dic_receive_l2 = j1_with_time_parallel(ParticleAttributes(i, m_038, ur), fw_l2)
+            _, dic_receive_l4 = j1_with_time_parallel(ParticleAttributes(i, m_038, ur), fw_l4)
+
+            # dic_receive_l2["ponto"] = i
+            # dic_receive_l4["ponto"] = i
+            dic_receive_l2["execucao"] = e
+            dic_receive_l4["execucao"] = e
+            
+            dic_receive_l2["z"] = "l2"
+            dic_receive_l4["z"] = "l4"
+
+            writer_csv_file.writerow(dic_receive_l2)
+            writer_csv_file.writerow(dic_receive_l4)
+            
+        pbar.update()
+
+    pbar.refresh()
+    pbar.close()  
+
+
 def j1_frozen_wave_time_calculate():
     global dic_time
     var_lambda = 1064 * nano
@@ -196,7 +285,7 @@ def j1_frozen_wave_time_calculate():
 
     time_file_name = "./simulations/outputs/time_result/"+ "j1_frozen_wave_with_x_3_and_3_values_with_n_max_after_parallel" + ".csv"
     time_file = open(time_file_name, 'w', newline='')
-    writer_csv_file = csv.DictWriter(time_file, fieldnames= ["ponto", "n_max", "j1", "gn", "gn1", "ot", "op"])
+    writer_csv_file = csv.DictWriter(time_file, fieldnames= ["ponto_x", "n_max", "j1", "gn", "gn1", "ot", "op"])
     writer_csv_file. writeheader()
 
     pbar = tqdm(colour=orange, total=len(x), desc="Calculating")
@@ -290,10 +379,92 @@ def j1_frozen_test():
     # pbar.close()
 
 
+def j1_frozen_wave_beam_with_three_size_parameters_multiprosses():
+    path = "./simulations/outputs/time_result/"
+    title = "j1_frozen_wave_"
+    simulation2 = "with_z0_l2_l4_and_10_times_50_values_after_j1_parallel_4_processes"
+    
+    time_file_name2 = path + title + simulation2 + ".csv"
+    print(time_file_name2)
+
+    time_file2 = open(time_file_name2, 'w', newline='')
+    writer_csv_file = csv.DictWriter(
+        time_file2, 
+        fieldnames= ["execucao", "tempo"])
+    
+    writer_csv_file. writeheader()
+
+    dic_time = {'execucao':0, 'tempo':0}
+
+
+    var_lambda = 1064 * nano
+        
+    k = (2*math.pi) / var_lambda
+    n = -75
+    q = 0.8*k
+    l = 400*micro    
+
+    fw_l2 = FrozenWaveAttributes(k, l/2, q, l, n)
+    fw_l4 = FrozenWaveAttributes(k, l/4, q, l, n)
+
+    ur = 1
+    m_038 = 1.57 - 0.038j
+
+    x = np.linspace(0.1, 20, qnt_points)
+    particles = [(ParticleAttributes(i_x, m_038, ur)) for i_x in x]
+
+    pool_size = multiprocessing.cpu_count()
+
+    if calculate_average:        
+        pbar = tqdm(colour=orange, total=max_executions, desc="Calculating points graph 2", leave=False)
+        
+        for i in range(max_executions):            
+            print("Começando l/2")
+            pool = multiprocessing.Pool(processes=pool_size)
+            startl2 = timer() 
+            outputs_l2 = pool.starmap(j1, zip(particles, repeat(fw_l2)))
+            pool.close() 
+            pool.join() 
+            time_l2 = timer() - startl2
+
+
+            print("Começando l/4")
+            pool_l4 = multiprocessing.Pool(processes=pool_size)
+            startl4 = timer() 
+            outputs_l4 = pool_l4.starmap(j1, zip(particles, repeat(fw_l4)))
+            pool_l4.close() 
+            pool_l4.join() 
+            time_l4 = timer() - startl4
+            
+            time_total = time_l2 + time_l4
+
+            dic_time["execucao"] = i
+            dic_time["tempo"] = time_total
+           
+            writer_csv_file.writerow(dic_time)
+
+            pbar.update()
+    
+        pbar.refresh()
+        pbar.close()  
+       
+
+    # outputs_l4_m = [i * 250 for i in outputs_l4]
+
+    # results = [outputs_l2, outputs_l4_m]
+    # x_label = "Size Parameter x"
+    # y_label = "Asymmetry Factor $J_1(x)$"
+    # legend = ["$z_0 = L/2$", r'$z_0 = L/4 \times 250$']
+    # plot_graphic(results, x, x_label, y_label, legend)
+
+
+
 if __name__ == '__main__':
-    print("tres particulas")
-    j1_frozen_wave_beam_with_three_size_parameters()
-    print("z0 com l2 e l4")
-    j1_frozen_wave_with_varing_z0_values()
+    # print("tres particulas")
+    # j1_frozen_wave_beam_with_three_size_parameters()
+    # print("z0 com l2 e l4")
+    # j1_frozen_wave_with_varing_z0_values()
+    j1_frozen_wave_with_varing_z0_values_with_time_calculate()
+    # j1_frozen_wave_beam_with_three_size_parameters_multiprosses()
     # j1_frozen_wave_time_calculate()
     # j1_frozen_test()

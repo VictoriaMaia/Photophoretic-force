@@ -143,6 +143,7 @@ def gn_calculate(infos, q_i):
     div_kz_q_k = kz_q / k
 
     frist_term_sum = A_q(l,q_i) / (1 + div_kz_q_k)
+    # frist_term_sum = 1
     second_term_sum = pi_m_n(1, n, div_kz_q_k) + tau_m_n(1, n, div_kz_q_k)
     third_term_sum = exp(1j*kz_q*z0)
     
@@ -170,9 +171,9 @@ def gn_frozen_wave_beam_with_parallel(n, n_to_q, k, z0, l, q):
 
     result_sum = 0
 
-    pool_size = multiprocessing.cpu_count()        
-    if pool_size > 1:
-        pool_size = int(pool_size/2)
+    pool_size = multiprocessing.cpu_count() 
+    # if pool_size > 1:
+    #     pool_size = int(pool_size/2)
 
     pool = multiprocessing.Pool(processes=pool_size)
 
