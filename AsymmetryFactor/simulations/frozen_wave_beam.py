@@ -3,7 +3,7 @@ sys.path.append('./')
 
 from AsymmetryFactor.particle.particle_class import ParticleAttributes
 from AsymmetryFactor.beams.frozenwave.frozenwave_class import FrozenWaveAttributes
-from AsymmetryFactor.j1 import j1, j1_with_time, j1_with_time_parallel, j1_with_time_gn_parallel
+from AsymmetryFactor.j1 import j1, j1_with_time, j1_with_time_parallel, j1_with_time_gn_parallel, j1_with_time_gn_term_calculate
 from simulations.create_graph import plot_graphic
 from simulations.time_operations import *
 from timeit import default_timer as timer
@@ -22,8 +22,8 @@ nano = 10**(-9)
 orange = '#ff6800'
 
 calculate_average = True
-max_executions = 10
-qnt_points = 100
+max_executions = 1
+qnt_points = 3
 
 # dic_time = {'ponto':0, 'gn': 0, 'gn1': 0, 'ot': 0, 'op':0, 'j1':0}
 
@@ -102,6 +102,111 @@ def j1_frozen_wave_beam_with_three_size_parameters():
         legend = ["x = 0.1", "x = 3", "x = 8"]
         plot_graphic(results, z0, x_label, y_label, legend)
         
+
+def j1_frozen_wave_with_varing_z0_values_gn_term_calculate():
+    path = "./simulations/outputs/time_result/"
+    title = "j1_frozen_wave_"
+    simulation2 = "with_z0_l2_l4_and_1_times_1_values_calculate_gn_terms_aq_integral_definida"
+    
+    time_file_name2 = path + title + simulation2 + ".csv"
+    print(time_file_name2)
+
+    time_file2 = open(time_file_name2, 'w', newline='')
+    writer_csv_file = csv.DictWriter(
+        time_file2, 
+        fieldnames= ["execucao", "valor_de_j1", "valor_de_j1_serial", "ponto", "z", "n_max", "j1",  \
+                     "gn", "n", "qnt_q_values", "Aq", "pi_tau", "frac_exp", "ops_gn", \
+                     "gn1", "ot", "op" ])
+    
+
+    # times_terms = {'qnt_q_values': len(q_values), 'Aq':0, 'pi_tau':0, 'frac_exp':0, 'op': 0}
+
+    dic_to_write = {"execucao":0, "valor_de_j1":0, "valor_de_j1_serial":0, "ponto":0, "z":0, "n_max":0, "j1":0,  \
+                     "gn":0, "n":0, "qnt_q_values":0, "Aq":0, "pi_tau":0, "frac_exp":0, "ops_gn":0, \
+                     "gn1":0, "ot":0, "op":0}
+    
+    writer_csv_file. writeheader()
+
+    var_lambda = 1064 * nano
+        
+    k = (2*math.pi) / var_lambda
+    n = -75
+    q = 0.8*k
+    l = 400*micro   
+
+    fw_l2 = FrozenWaveAttributes(k, l/2, q, l, n)
+    # fw_l4 = FrozenWaveAttributes(k, l/4, q, l, n)
+
+    ur = 1
+    m_038 = 1.57 - 0.038j
+    x = np.linspace(0.1, 20, qnt_points)
+
+    # results_l2 = []
+    # results_l4 = []
+
+    # pbar = tqdm(colour=orange, total=max_executions, desc="Calculating")        
+    for e in range(max_executions):
+
+        for i in x:
+            # _, dic_receive_l2 = j1_with_time_gn_parallel(ParticleAttributes(i, m_038, ur), fw_l2)
+            # _, dic_receive_l4 = j1_with_time_gn_parallel(ParticleAttributes(i, m_038, ur), fw_l4)
+
+            # _, dic_receive_l2 = j1_with_time_parallel(ParticleAttributes(i, m_038, ur), fw_l2)
+            # _, dic_receive_l4 = j1_with_time_parallel(ParticleAttributes(i, m_038, ur), fw_l4)
+
+            value_j1, dic_receive_l2 = j1_with_time_gn_term_calculate(ParticleAttributes(i, m_038, ur), fw_l2)
+            value_j1_serial = j1(ParticleAttributes(i, m_038, ur), fw_l2)
+
+            print(value_j1)
+            print(value_j1_serial)
+
+            # dic_receive_l2["ponto"] = i
+            # dic_receive_l4["ponto"] = i
+            # dic_receive_l2["execucao"] = e
+            # dic_receive_l4["execucao"] = e
+            
+            # dic_receive_l2["z"] = "l2"
+            # dic_receive_l4["z"] = "l4"
+
+            dic_to_write["valor_de_j1"] = value_j1
+            dic_to_write["valor_de_j1_serial"] = value_j1_serial
+            dic_to_write["execucao"] = e
+            dic_to_write["z"] = "l2"
+            dic_to_write["ponto"] = dic_receive_l2["ponto"]
+            dic_to_write["n_max"] = dic_receive_l2["n_max"]
+            dic_to_write["j1"] = dic_receive_l2["j1"]
+            dic_to_write["gn"] = dic_receive_l2["gn"]
+            dic_to_write["gn1"] = dic_receive_l2["gn1"]
+            dic_to_write["ot"] = dic_receive_l2["ot"]
+            dic_to_write["op"] = dic_receive_l2["op"]
+
+            
+            qnt_n_max = dic_receive_l2["n_max"]
+            for n in range(qnt_n_max):
+                dic_to_write["n"] = dic_receive_l2["gns_terms"][n]['n']
+                dic_to_write["qnt_q_values"] = dic_receive_l2["gns_terms"][n]['qnt_q_values']
+                dic_to_write["Aq"] = dic_receive_l2["gns_terms"][n]['Aq']
+                dic_to_write["pi_tau"] = dic_receive_l2["gns_terms"][n]['pi_tau']
+                dic_to_write["frac_exp"] = dic_receive_l2["gns_terms"][n]['frac_exp']
+                dic_to_write["ops_gn"] = dic_receive_l2["gns_terms"][n]['ops_gn']
+                writer_csv_file.writerow(dic_to_write)
+
+
+            # dic_to_write = {"execucao":0, "ponto":0, "z":0, "n_max":0, "j1":0,  \
+            #          "gn":0, "qnt_q_values":0, "Aq":0, "pi_tau":0, "frac_exp":0, "ops_gn":0, \
+            #          "gn1":0, "ot":0, "op":0}
+
+            # writer_csv_file.writerow(dic_receive_l2)
+            # writer_csv_file.writerow(dic_receive_l4)
+            
+    #     pbar.update()
+
+    # pbar.refresh()
+    # pbar.close()  
+
+
+
+
 
 def j1_frozen_wave_with_varing_z0_values():
     path = "./simulations/outputs/time_result/"
@@ -425,6 +530,7 @@ def j1_frozen_wave_beam_with_three_size_parameters_multiprosses():
             outputs_l2 = pool.starmap(j1, zip(particles, repeat(fw_l2)))
             pool.close() 
             pool.join() 
+            
             time_l2 = timer() - startl2
 
 
@@ -463,8 +569,9 @@ if __name__ == '__main__':
     # print("tres particulas")
     # j1_frozen_wave_beam_with_three_size_parameters()
     # print("z0 com l2 e l4")
+    j1_frozen_wave_with_varing_z0_values_gn_term_calculate()
     # j1_frozen_wave_with_varing_z0_values()
-    j1_frozen_wave_with_varing_z0_values_with_time_calculate()
+    # j1_frozen_wave_with_varing_z0_values_with_time_calculate()
     # j1_frozen_wave_beam_with_three_size_parameters_multiprosses()
     # j1_frozen_wave_time_calculate()
     # j1_frozen_test()
