@@ -5,7 +5,7 @@ def ceiling_x(x):
     """
     Calculates the ceiling of x value.
     TO DO: describe better, please!
-    
+
     Parameters
     ----------
     x : size parameter of particle

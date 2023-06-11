@@ -8,10 +8,8 @@ class BeamAttributes:
         self.z0 = z0
         pass
 
-
     def print_beam_name(self):
         print("Name: ", self.name)
-
 
     @abc.abstractmethod
     def gn(self, n):
