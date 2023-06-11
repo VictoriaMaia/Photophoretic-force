@@ -20,30 +20,14 @@ def summation(particle, beam):
     
     for i in range(1, (n_max+1)):
         # variables computed in i position
-        vars_i = compute_variables(particle, i)
+        vars_i = SummationVariables(particle, i)
+        
+        gn = beam.gn(i)
+        conj_gn = np.conj(gn)
+        gn1 = beam.gn(i+1)
+        conj_gn1 = np.conj(gn1)
 
-        if isinstance(beam, GaussAttributes):
-            gn = gn_gaussian_beam(i, beam.k, beam.z0, beam.s)
-            conj_gn = np.conj(gn)
-            gn1 = gn_gaussian_beam((i+1), beam.k, beam.z0, beam.s)
-            conj_gn1 = np.conj(gn1)
-        elif isinstance(beam, BesselAttributes):
-            gn = gn_bessel_beam(i, beam.k, beam.z0, beam.angle)
-            conj_gn = np.conj(gn)
-            gn1 = gn_bessel_beam((i+1), beam.k, beam.z0, beam.angle)
-            conj_gn1 = np.conj(gn1)
-        elif isinstance(beam, FrozenWaveAttributes):
-            gn = gn_frozen_wave_beam(i, beam.n, beam.k, beam.z0, beam.l, beam.q)
-            conj_gn = np.conj(gn)
-            gn1 = gn_frozen_wave_beam((i+1), beam.n, beam.k, beam.z0, beam.l, beam.q)
-            conj_gn1 = np.conj(gn1)
-        else:
-            gn = 1
-            conj_gn = 1
-            gn1 = 1
-            conj_gn1 = 1
-
-
+    
         first_term_for = ((i*(i+2)) / particle.m) * \
                          (
                                  (gn1 * conj_gn * vars_i.cn1 * vars_i.conj_cn * vars_i.rn1) +

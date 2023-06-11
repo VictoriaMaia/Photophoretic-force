@@ -1,5 +1,5 @@
-from AsymmetryFactor.particle.particle_class import ParticleAttributes
-from AsymmetryFactor.beams.bessel.bessel_class import BesselAttributes
+from AsymmetryFactor.particle import ParticleAttributes
+from AsymmetryFactor.beams import BesselAttributes
 from AsymmetryFactor.j1 import j1
 import math
 
