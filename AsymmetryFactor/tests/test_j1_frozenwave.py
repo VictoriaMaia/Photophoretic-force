@@ -1,5 +1,5 @@
-from AsymmetryFactor.particle.particle_class import ParticleAttributes
-from AsymmetryFactor.beams.frozenwave.frozenwave_class import FrozenWaveAttributes
+from AsymmetryFactor.particle import ParticleAttributes
+from AsymmetryFactor.beams import FrozenWaveAttributes
 from AsymmetryFactor.j1 import j1
 import math
 

@@ -1,5 +1,5 @@
-from AsymmetryFactor.particle.particle_class import ParticleAttributes
-from AsymmetryFactor.beams.gaussian.gaussian_class import GaussAttributes
+from AsymmetryFactor.particle import ParticleAttributes
+from AsymmetryFactor.beams import GaussAttributes
 from AsymmetryFactor.j1 import j1
 import math
 
