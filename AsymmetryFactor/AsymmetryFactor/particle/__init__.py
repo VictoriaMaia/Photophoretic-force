@@ -1,8 +1,6 @@
 """
 
-This subpackage has the ...
-
-TO DO: make this description!
+This subpackage has the particle class
 
 """
 

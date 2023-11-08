@@ -1,7 +1,10 @@
 """
 
-This subpackage has the ...
-TO DO: add description!
+This subpackage has the definitions of the beams used as a child class to class
+BeamAttributes containing its implementations of the term gn (Beam Shape Coefficients)
+and necessary auxiliary functions.
+
+To add another beam, just create a child class and add the necessary functions.
 
 """
 

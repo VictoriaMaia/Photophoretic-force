@@ -3,8 +3,10 @@ import math
 
 def ceiling_x(x):
     """
-    Calculates the ceiling of x value.
-    TO DO: describe better, please!
+    Calculates the ceiling of x value. 
+    Is used to calculate the value of n_max based on the Wiscombe critetion
+    wihich calculates the maximum number of partial waves that are considered 
+    to be interacting with the particle.
 
     Parameters
     ----------

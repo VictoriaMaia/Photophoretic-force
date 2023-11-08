@@ -7,11 +7,12 @@ import numpy as np
 
 def summation(particle, beam):
     """
-    TO DO: add description
+    Calculates the summation of j1
 
     Parameters
     ----------
-    particle :
+    particle : is the particle object that contains informations about the particle
+    beam     : is the bem object that contains informations about the beam and your gn function
     """
     n_max = ceiling_x(particle.x)
     v_eta_r = eta_r(particle.m, particle.ur)
@@ -54,12 +55,12 @@ def summation(particle, beam):
 
 def j1(particle, beam):
     """
-    TO DO: add description
+    Calculate the asymmetry factor value
 
     Parameters
     ----------
-    particle :
-    beam     :
+    particle : is the particle object that contains informations about the particle
+    beam     : is the bem object that contains informations about the beam and your gn function
     """
     if isinstance(particle, ParticleAttributes) and\
        isinstance(beam, BeamAttributes):
