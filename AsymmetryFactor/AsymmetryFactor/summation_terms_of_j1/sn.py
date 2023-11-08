@@ -11,7 +11,7 @@ def term_s_n(m, x, n):
     ----------
     m   : index of refraction of the particle
     x : particle size parameter
-    n   : the current index of the summation
+    n   : the current index of the summation of j1
     """
     m_2 = m ** 2
     m_x = m * x

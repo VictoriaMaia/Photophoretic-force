@@ -7,9 +7,10 @@ given the information about the particle and the beam used.
 
 The implemented beams that can currently be used are:
 
+Plane wave beam
 Gaussian beam
 Bessel beam
-Frozen wave
+Frozen wave beam
 """
 
 from AsymmetryFactor import summation_terms_of_j1

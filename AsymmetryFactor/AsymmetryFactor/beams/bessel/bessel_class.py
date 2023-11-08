@@ -17,14 +17,11 @@ class BesselAttributes(BeamAttributes):
 
     def gn(self, n):
         """
-        TO DO: add description
+        Calculates the Beam Shape Coefficients (gn) of the Bessel beam
 
         Parameters
         ----------
-        n     :
-        k     :
-        z0    :
-        angle :
+        n  : the current index of the summation of j1
         """
         i = 1j
 
@@ -44,13 +41,12 @@ class BesselAttributes(BeamAttributes):
 
     def tau_m_n(self, m, n, x):
         """
-        TO DO: add description
+        Calculate the value of the function Tau, a generalized Legendre function
 
         Parameters
         ----------
-        m :
-        n :
-        x :
+        m and n : are inputs of Legendre functions of the first kind (lpmn)
+        x       : size of the particle 
         """
         pmn = scipy.special.lpmn(m, n, x)[0][m][n]
         pmn1 = scipy.special.lpmn(m, n+1, x)[0][m][n+1]
@@ -69,13 +65,11 @@ class BesselAttributes(BeamAttributes):
 
     def pi_m_n(self, m, n):
         """
-        TO DO: add description
+        Calculate the value of the function Pi, a generalized Legendre function
 
         Parameters
         ----------
-        m     :
-        n     :
-        angle :
+        m and n : are inputs of Legendre functions of the first kind (lpmn)
         """
         cos_alpha = math.cos(math.radians(self.angle))
         num = scipy.special.lpmn(m, n, cos_alpha)[0][m][n]

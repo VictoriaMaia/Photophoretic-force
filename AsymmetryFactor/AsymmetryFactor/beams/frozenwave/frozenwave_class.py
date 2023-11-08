@@ -22,16 +22,11 @@ class FrozenWaveAttributes(BeamAttributes):
 
     def gn(self, n):
         """
-        TO DO: add description
+        Calculates the Beam Shape Coefficients (gn) of the Frozen Wave beam
 
         Parameters
         ----------
-        n      :
-        n_to_q :
-        k      :
-        z0     :
-        l      :
-        q      :
+        n  : the current index of the summation of j1
         """
         i = 1j
 
@@ -55,13 +50,12 @@ class FrozenWaveAttributes(BeamAttributes):
 
     def pi_m_n(self, m, n, x):
         """
-        TO DO: add description
+        Calculate the value of the function Pi, a generalized Legendre function
 
         Parameters
         ----------
-        m :
-        n :
-        x :
+        m and n : are inputs of Legendre functions of the first kind (lpmn)
+        x       : size of the particle 
         """
         num = scipy.special.lpmn(m, n, x)[0][m][n]
         den = math.sqrt(1 - (x**2))
@@ -70,13 +64,12 @@ class FrozenWaveAttributes(BeamAttributes):
 
     def tau_m_n(self, m, n, x):
         """
-        TO DO: add description
+        Calculate the value of the function Tau, a generalized Legendre function
 
         Parameters
         ----------
-        m :
-        n :
-        x :
+        m and n : are inputs of Legendre functions of the first kind (lpmn)
+        x       : size of the particle 
         """
         pmn = scipy.special.lpmn(m, n, x)[0][m][n]
         pmn1 = scipy.special.lpmn(m, n + 1, x)[0][m][n + 1]
@@ -91,24 +84,23 @@ class FrozenWaveAttributes(BeamAttributes):
 
     def Kz_q(self, q_i):
         """
-        TO DO: add description
+        Calculates the longitudinal wavenumber of the q_ith bessel beam.
+
+        In the text of the thesis this variable is called Beta_q.
 
         Parameters
         ----------
-        q_i :
-        L   :
-        q   :
+        q_i : the current index of the summation of gn
         """
         return self.q + ((2 * math.pi * q_i) / self.L)
 
     def A_q(self, q_i):
         """
-        TO DO: add description
+        Calculates the q_ith complex amplitude that weights the q_ith Bessel beam that makes up the FW
 
         Parameters
         ----------
-        l :
-        q :
+        q_i : the current index of the summation of gn
         """
 
         i = 1j

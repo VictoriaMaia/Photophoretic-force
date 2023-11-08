@@ -15,14 +15,11 @@ class GaussAttributes(BeamAttributes):
 
     def gn(self, n):
         """
-        TO DO: add description
+        Calculates the Beam Shape Coefficients (gn) of the Gaussian beam
 
         Parameters
         ----------
-        n  :
-        k  :
-        z0 :
-        s  :
+        n  : the current index of the summation of j1
         """
         i = 1j
 
@@ -40,13 +37,7 @@ class GaussAttributes(BeamAttributes):
 
     def var_q(self):
         """
-        TO DO: add description
-
-        Parameters
-        ----------
-        z0 :
-        s  :
-        k  :
+        Calculates the value of the variable Q
         """
         i = 1j
         second_term_sub = i * 2 * self.z0 * (self.s**2) * self.k

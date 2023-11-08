@@ -10,7 +10,7 @@ def term_r_n(m, x, n):
     ----------
     m : index of refraction of the particle
     x : particle size parameter
-    n : the current index of the summation
+    n : the current index of the summation of j1
     """
     m_x = m * x
     psi_n1_m_x = ricatti_bessel_f_k((n+1), m_x)

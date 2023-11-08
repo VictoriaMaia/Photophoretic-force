@@ -1,7 +1,6 @@
 import scipy.special
 
 
-# def bessel_j_n(n, x):
 def bessel_f_k(n, x):
     """
     Bessel function of the first kind of "n" order calculated using the
@@ -14,8 +13,6 @@ def bessel_f_k(n, x):
     """
     return scipy.special.jv(n, x)
 
-
-# def bessel_j_n_without_derivative(n, x):
 def spherical_bessel_f_k(n, x):
     """
     Spherical Bessel function of the first kind of "n" order calculated
@@ -28,8 +25,6 @@ def spherical_bessel_f_k(n, x):
     """
     return scipy.special.spherical_jn(n, x, derivative=False)
 
-
-# def bessel_y_n(n, x):
 def bessel_s_k(n, x):
     """
     Bessel function of the second kind of "n" order calculated using the
@@ -42,8 +37,6 @@ def bessel_s_k(n, x):
     """
     return scipy.special.yv(n, x)
 
-
-# def bessel_y_n_without_derivative(n, x):
 def spherical_bessel_s_k(n, x):
     """
     Spherical Bessel function of the second kind of "n" order calculated
@@ -56,8 +49,6 @@ def spherical_bessel_s_k(n, x):
     """
     return scipy.special.spherical_yn(n, x, derivative=False)
 
-
-# def ricatti_bessel_j_n(n, x):
 def ricatti_bessel_f_k(n, x):
     """
     Ricatti-Bessel function of the first kind.
@@ -73,8 +64,6 @@ def ricatti_bessel_f_k(n, x):
 
     return x * spherical_bessel_f_k(n, x)
 
-
-# def ricatti_bessel_j_n_derivative(n, x):
 def ricatti_bessel_f_k_derivative(n, x):
     """
     Derivative of Ricatti-Bessel function of the first kind.
@@ -87,8 +76,6 @@ def ricatti_bessel_f_k_derivative(n, x):
     return (n + 1) * spherical_bessel_f_k(n, x) - x * \
         spherical_bessel_f_k((n + 1), x)
 
-
-# def spherical_hankel_2_k(n, z):
 def spherical_hankel_s_k(n, x):
     """
     Spherical Hankel Function of the second kind
@@ -103,8 +90,6 @@ def spherical_hankel_s_k(n, x):
 
     return jn - (1j * yn)
 
-
-# def ricatti_bessel_h_n(n, x):
 def ricatti_bessel_s_k(n, x):
     """
     Ricatti-Bessel function of the second kind.
@@ -120,8 +105,6 @@ def ricatti_bessel_s_k(n, x):
     """
     return x * spherical_hankel_s_k(n, x)
 
-
-# def ricatti_bessel_h_n_derivative(n, z):
 def ricatti_bessel_s_k_derivative(n, x):
     """
     Derivative of Ricatti-Bessel function of the second kind.
@@ -133,4 +116,4 @@ def ricatti_bessel_s_k_derivative(n, x):
     x : input parameter or argument
     """
     return (1+n) * spherical_hankel_s_k(n, x) - x *\
-        spherical_hankel_s_k((1+n), x)  # old
+        spherical_hankel_s_k((1+n), x) 

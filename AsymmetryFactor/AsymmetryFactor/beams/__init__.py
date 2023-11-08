@@ -1,8 +1,6 @@
 """
 
-This subpackage has the ...
-TO DO: add description!
-
+This subpackage has the definitions of the beams used and their implementations of the term gn (Beam Shape Coefficients)
 """
 
 from .planewave.plane_wave_class import PlaneWaveAttributes
