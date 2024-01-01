@@ -28,14 +28,14 @@ This time can be drastically reduced if you have already calculated the gn of yo
 ## Installation
 To use the module correctly, download the repository and then run
 
-$ pip install requirements.txt
+$ pip install -r requirements.txt
 
 The packages used will be installed and the code will be ready to be used. If you want to make sure everything went well, you can run the implemented tests by running the following command:
 
 $ pytest
 
 
-##Support
+## Support
 If you have any questions or suggestions for improvements, you can open an issue in the repository.
 
 
